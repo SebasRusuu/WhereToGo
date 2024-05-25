@@ -35,7 +35,21 @@ We accept some advices :)
 
 ## License
 
-This project is licensed under the terms of the [MIT License](./LICENSE).
+This project is licensed under the terms of the [Creative Commons Attribution-ShareAlike 4.0 International License](./LICENSE).
+
+Copyright (c) 2024 Sebastião Rusu, Tomás Lebre, José Franco.
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+View the full license at [Creative Commons](https://creativecommons.org/licenses/by-sa/4.0/).
 
 
 # WhereToGo
@@ -79,5 +93,19 @@ Aceitamos dicas para melhorar-mos :)
 
 ## Licença
 
-Este projeto está licenciado sob os termos da [Licença MIT](./LICENSE).
+Este projeto está licenciado sob os termos da [Licença Creative Commons Attribution-ShareAlike 4.0 International](./LICENSE).
+
+Copyright (c) 2024 Sebastião Rusu, Tomás Lebre, José Franco.
+
+És livre para:
+- Partilhar — copiar e redistribuir o material em qualquer meio ou formato
+- Adaptar — remixar, transformar e criar a partir do material para qualquer fim, mesmo comercialmente.
+
+Sob os seguintes termos:
+- Atribuição — Deve dar o crédito apropriado, fornecer um link para a licença e indicar se mudanças foram feitas. Pode fazê-lo de qualquer maneira razoável, mas não de forma que sugira que o licenciante te endossa ou ao teu uso.
+- PartilhaIgual — Se editares, transformares, ou criares a partir do material, deve distribuir as tuas contribuições sob a mesma licença que o original.
+
+Sem restrições adicionais — Não podes aplicar termos legais ou medidas tecnológicas que restrinjam legalmente outros de fazerem qualquer coisa que a licença permita.
+
+Consulte a licença completa em [Creative Commons](https://creativecommons.org/licenses/by-sa/4.0/).
 
