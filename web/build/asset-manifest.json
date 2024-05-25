@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.61b73c70.css",
+    "main.js": "/static/js/main.ba05d44f.js",
+    "static/media/ponte_azul.png": "/static/media/ponte_azul.93a78e9837e2e0b2f972.png",
+    "static/media/google.png": "/static/media/google.73aa439985ed7420c2a3.png",
+    "static/media/logoponte.png": "/static/media/logoponte.42a51a19fad3e7d01e95.png",
+    "index.html": "/index.html",
+    "main.61b73c70.css.map": "/static/css/main.61b73c70.css.map",
+    "main.ba05d44f.js.map": "/static/js/main.ba05d44f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.61b73c70.css",
+    "static/js/main.ba05d44f.js"
+  ]
+}

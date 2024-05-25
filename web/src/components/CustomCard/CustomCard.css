@@ -1,0 +1,24 @@
+/* CustomCard.css */
+.custom-card {
+    width: 1030px;
+    height: 370px;
+    background-color: #EADDCA;
+    border-radius: 20px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.text-section {
+    width: 420px;
+}
+
+.btn-primary {
+    width: 470px;
+    height: 59px;
+    background-color: var(--bege); /* Certifique-se de que a variável --bege está definida no seu CSS raiz ou no arquivo onde ela é usada */
+    border: none;
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}

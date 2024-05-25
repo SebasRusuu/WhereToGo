@@ -1,0 +1,38 @@
+.feature-card-contact {
+    background-color: var(--bege);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row; /* Elementos lado a lado */
+    align-items: center; /* Centraliza verticalmente o conteúdo */
+    justify-content: space-between; /* Distribui o espaço entre o texto e a imagem */
+    max-width: 800px;
+    height: 370px;
+    margin: 60px auto;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature-text-container {
+    display: flex;
+    flex-direction: column; /* Organiza as frases verticalmente */
+    justify-content: center;
+    margin-right: 20px; /* Espaço entre texto e imagem */
+  }
+  
+  .feature-title, .feature-email {
+    color: var(--blue);
+    margin: 10px 80px;
+  }
+  
+  .feature-title {
+    font-size: 35px;
+  }
+  
+  .feature-email {
+    font-size: 20px;
+  }
+  
+  .feature-image-contact {
+    width: 50%; /* Ajusta conforme a proporção desejada para a imagem */
+    object-fit: cover; /* Mantém a proporção da imagem sem distorcer */
+  }

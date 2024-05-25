@@ -1,0 +1,418 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+
+html,body{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  --blue: #001FA8;
+  --bege: #FEF1CC;
+  
+}*
+
+
+
+.header {
+  display: flex;
+  justify-content: space-between; /* Espaça os elementos filhos */
+  align-items: center;
+  padding: 0 55px;
+}
+
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 3px; 
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centraliza os itens horizontalmente */
+  flex-grow:1;
+  padding-right:12%;
+  position: relative;
+}
+
+.nav-link {
+  transition: transform 0.3s, margin 0.3s;
+  
+  margin: 0 20px;
+}
+
+.nav-content {
+  text-decoration: none;
+  color: #001FA8;
+  margin: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block; /* Assegura que o motion.div se comporte como um inline-block */
+}
+.header a {
+  text-decoration: none; /* Remove sublinhado de todos os links no header */
+}
+
+.logo {
+  margin: 0;
+  font-size: 30px;
+  font-weight:bolder;
+  color: #001FA8;
+  display: left;
+}
+
+.logoImg{
+  width: 100px;
+  height: 100px;
+}
+
+.login-button-container {
+  position: absolute;
+  right: 0; /* Alinha o botão à direita */
+  padding-right: 10px; /* Espaçamento à direita para não ficar colado na borda */
+}
+
+.login-button {
+  padding: 10px 25px;
+  background-color: #001FA8;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  
+  
+}
+
+
+.login-button:hover {
+  background-color: #FEF1CC;
+  transition: 0.6s;
+}
+
+a{
+  text-decoration: none;
+  color: #001FA8;
+}
+
+
+
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger-menu div {
+  background-color: #001FA8;
+  margin: 5px 0;
+  height: 2px;
+  width: 25px;
+}
+
+
+
+
+
+
+
+
+footer {
+  /* Posiciona o rodapé no fundo da página sem ficar preso */
+  /* flex:1; */
+  /* position: absolute; */
+  width: 100%;
+  background-color: #F0F0F0;  /* Cor de fundo */
+  padding: 10px 0;            /* Espaçamento interno */
+  display: flex;          
+  justify-content: center;   
+  align-items: center;      
+  margin-top: 2%;  
+}
+
+
+.txt-footer, .footer-link {
+  color: var(--blue);
+  margin: 0 10px;  /* Adiciona margem entre os elementos */
+  padding: 5px;
+  text-decoration: none; /* Remove sublinhado, caso não desejado */
+}
+
+.footer-link {
+  text-decoration: underline; /* Manter sublinhado para links */
+}
+
+
+/* SearchBar */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  padding: 2px;
+  gap: 7px;
+  margin-left: 64%;
+}
+
+.search-bar input, .search-bar select, .search-bar button {
+  padding: 8px;
+  border: 2px solid var(--blue);
+  border-radius: 15px;
+  outline: none;
+}
+
+.search-bar button {
+  cursor: pointer;
+  background-color: var(--blue);
+  color: #ffffff;
+}
+
+.search-bar input:focus, .search-bar select:focus, .search-bar button:focus {
+  border-color: var(--bege);
+}
+
+/* Inicio css página local */
+
+
+.sloganloc-p{
+  color: #001FA8;
+  font-size: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  padding-top: 15px;
+  float: left;
+}
+
+
+/* Fim da página places */
+
+
+
+/* Responsive Telemovel */
+@media (max-width: 768px) {
+
+ 
+    .header { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 0 15px; } 
+
+    .branding { 
+      margin-bottom: 10px; } 
+
+    .logo { 
+      font-size: 26px; 
+    } 
+
+    .navigation {
+      display: none; /* Esconde o menu de navegação por padrão */
+      flex-direction: column; /* Orientação vertical dos links */
+      align-items: flex-start; /* Alinha os links à esquerda */
+      padding: 20px; /* Espaço ao redor dos links */
+      position: absolute; /* Posicionamento absoluto */
+      top: 120px; /* Posição a partir do topo do header */
+      right:0; /* Posição a partir da esquerda da página */
+      background-color: white; /* Cor de fundo do menu expandido */
+      width: 50%; /* Largura do menu expandido */
+      height: 50%; /* Altura do menu expandido */
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra para destaque */
+      z-index: 1000; /* Garante que o menu fique acima de outros elementos */
+    }
+  
+    .navigation.active {
+      display: flex; /* Mostra o menu quando ativo */
+    }
+  
+    .nav-link {
+      margin: 10px 0; /* Espaçamento vertical entre links */
+      width: 80%; /* Largura para preencher o menu expandido */
+    }
+  
+    .nav-content {
+      padding: 10px 15px; /* Espaçamento interno para tornar mais clicável */
+      width: 100%; /* Largura para preencher o menu expandido */
+      text-align: right; /* Alinhamento do texto à esquerda */
+    }
+  
+    .hamburger-menu {
+      /* Posicione o botão à direita */
+      position: absolute;
+      right: 50px;
+      top: 50px;
+      display: flex; /* Mostra o ícone do menu hambúrguer */
+    }
+
+    .login-button-container {
+      /* meter o botão login em baixo do nav-link e à direita*/
+      position: relative;
+      display: flex;
+      margin-top: 20px;
+      justify-content: center;
+      /* meter o botão no lado direito */
+      padding-left: 80px;
+
+    }
+
+    footer {
+      /* Posiciona o rodapé no fundo da página sem ficar preso */
+      width: 100%;
+      background-color: #F0F0F0;  /* Cor de fundo */
+      padding: 10px 0;            /* Espaçamento interno */
+      display: flex;              /* Usa flexbox para layout */
+      justify-content: center;    /* Centraliza os itens horizontalmente */
+      align-items: center;        /* Alinha os itens verticalmente ao centro */
+    }
+    
+    .txt-footer, .footer-link {
+      color: #001FA8;
+      margin: 0 10px;  /* Adiciona margem entre os elementos */
+      padding: 5px;
+      text-decoration: none; /* Remove sublinhado, caso não desejado */
+    }
+    
+    .footer-link {
+      text-decoration: underline; /* Manter sublinhado para links */
+    }
+
+    .login-button { 
+      margin: 0 10px;
+
+
+    } 
+
+  }
+
+  /* Responsive Tablet */
+
+  @media (max-width: 1024px) {
+    .header { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 0 15px; } 
+
+    .branding { 
+      margin-bottom: 10px; } 
+
+    .logo { 
+      font-size: 24px; 
+    } 
+    .navigation {
+      display: none; /* Esconde o menu de navegação por padrão */
+      flex-direction: column; /* Orientação vertical dos links */
+      align-items: flex-start; /* Alinha os links à esquerda */
+      padding: 20px; /* Espaço ao redor dos links */
+      position: absolute; /* Posicionamento absoluto */
+      top: 120px; /* Posição a partir do topo do header */
+      right:0; /* Posição a partir da esquerda da página */
+      background-color: white; /* Cor de fundo do menu expandido */
+      width: 50%; /* Largura do menu expandido */
+      height: 50%; /* Altura do menu expandido */
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra para destaque */
+      z-index: 1000; /* Garante que o menu fique acima de outros elementos */
+    }
+  
+    .navigation.active {
+      display: flex; /* Mostra o menu quando ativo */
+    }
+  
+    .nav-link {
+      margin: 10px 0; /* Espaçamento vertical entre links */
+      width: 80%; /* Largura para preencher o menu expandido */
+    }
+  
+    .nav-content {
+      padding: 10px 15px; /* Espaçamento interno para tornar mais clicável */
+      width: 100%; /* Largura para preencher o menu expandido */
+      text-align: right; /* Alinhamento do texto à esquerda */
+    }
+  
+    .hamburger-menu {
+      /* Posicione o botão à direita */
+      position: absolute;
+      right: 50px;
+      top: 50px;
+      display: flex; /* Mostra o ícone do menu hambúrguer */
+    }
+    
+    .login-button-container {
+      /* meter o botão login em baixo do nav-link e à direita*/
+      position: relative;
+      display: flex;
+      margin-top: 20px;
+      justify-content: center;
+      /* meter o botão no lado direito */
+      padding-left: 80px;
+    }
+  }
+
+  /* Responsive Desktop from 1025 to 1138px */
+
+  @media (min-width: 1025px) and (max-width: 1138px) {
+    .header { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 0 15px; } 
+
+    .branding { 
+      margin-bottom: 10px; } 
+
+    .logo { 
+      font-size: 24px; 
+    } 
+
+    .navigation {
+      display: none; /* Esconde o menu de navegação por padrão */
+      flex-direction: column; /* Orientação vertical dos links */
+      align-items: flex-start; /* Alinha os links à esquerda */
+      padding: 20px; /* Espaço ao redor dos links */
+      position: absolute; /* Posicionamento absoluto */
+      top: 120px; /* Posição a partir do topo do header */
+      right:0; /* Posição a partir da esquerda da página */
+      background-color: white; /* Cor de fundo do menu expandido */
+      width: 50%; /* Largura do menu expandido */
+      height: 50%; /* Altura do menu expandido */
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra para destaque */
+      z-index: 1000; /* Garante que o menu fique acima de outros elementos */
+    }
+  
+    .navigation.active {
+      display: flex; /* Mostra o menu quando ativo */
+    }
+  
+    .nav-link {
+      margin: 10px 0; /* Espaçamento vertical entre links */
+      width: 80%; /* Largura para preencher o menu expandido */
+    }
+  
+    .nav-content {
+      padding: 10px 15px; /* Espaçamento interno para tornar mais clicável */
+      width: 100%; /* Largura para preencher o menu expandido */
+      text-align: right; /* Alinhamento do texto à esquerda */
+    }
+  
+    .hamburger-menu {
+      /* Posicione o botão à direita */
+      position: absolute;
+      right: 50px;
+      top: 50px;
+      display: flex; /* Mostra o ícone do menu hambúrguer */
+    }
+
+    .login-button-container {
+      /* meter o botão login em baixo do nav-link e à direita*/
+      position: relative;
+      display: flex;
+      margin-top: 20px;
+      justify-content: center;
+      /* meter o botão no lado direito */
+      padding-left: 80px;
+    } 
+
+
+  }
+
+  /* Responsive Desktop from 1139px */
+
+  @media (min-width: 1139px) and (max-width: 1368px) {
+
+
+  }

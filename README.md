@@ -1,111 +1,70 @@
-# WhereToGo
+# Getting Started with Create React App
 
-## English Version
-**WhereToGo** is a website designed to create personalized itineraries based on users' preferences and interests, helping them to organize their trip beforehand or even in the moment. Currently, we are focusing on locations within Portugal, but we plan to expand globally.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
+## Available Scripts
 
-- **Personalized Itineraries**: Tailored itineraries according to users' preferences and interests.
-- **WhereToEat**: A dedicated page for various restaurant options.
-- **Saved Itineraries**: A page for saved itineraries, completed trips, and upcoming trips for easy editing.
-- **Locations Page**: Featuring top-rated locations.
-- **Ratings Page**: Users can leave reviews and earn points for future discounts on places they wish to visit.
+In the project directory, you can run:
 
-## Technology Stack
+### `npm start`
 
-- **Front-End**: React, HTML5, CSS3
-- **Back-End**: Node.js, JavaScript
-- **Database**: PostgreSQL
-- **Development Tools**: Visual Studio Code, Docker, Git
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## API Integration
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-- **Google API**: We use Google API to fetch the best locations and will develop an algorithm to choose the best places based on ratings and preferences.
+### `npm test`
 
-## Team
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-This project is being developed by:
-- [Sebastião Rusu(me)](https://github.com/SebasRusuu)
-- [Tomás Lebre](https://github.com/tomaslebre)
-- José Franco
+### `npm run build`
 
-## Contributing
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-We accept some advices :)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## License
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-This project is licensed under the terms of the [Creative Commons Attribution-ShareAlike 4.0 International License](./LICENSE).
+### `npm run eject`
 
-Copyright (c) 2024 Sebastião Rusu, Tomás Lebre, José Franco.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-You are free to:
-- Share — copy and redistribute the material in any medium or format
-- Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Under the following terms:
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-View the full license at [Creative Commons](https://creativecommons.org/licenses/by-sa/4.0/).
+## Learn More
 
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-# WhereToGo
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-## Versão em Portugiuês
+### Code Splitting
 
-# WhereToGo
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-**WhereToGo** é um site projetado para criar roteiros personalizados com base nas preferências e interesses dos utilizadores, ajudando-os a organizar a sua viagem com antecedência ou até mesmo no momento. Atualmente, estamos focados em locais dentro de Portugal, mas planeamos expandir globalmente.
+### Analyzing the Bundle Size
 
-## Funcionalidades
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-- **Roteiros Personalizados**: Roteiros feitos sob medida de acordo com as preferências e interesses dos utilizadores.
-- **WhereToEat**: Uma página dedicada a várias opções de restaurantes.
-- **Roteiros Guardados**: Uma página para roteiros guardados para futuras viagens para possivel edição e roteiros concluídos.
-- **Página de Locais**: Com os locais mais bem avaliados para futuras viagens.
-- **Página de Classificações**: Os utilizadores podem deixar avaliações e ganhar pontos para futuros descontos em locais que desejam visitar.
+### Making a Progressive Web App
 
-## Stack Tecnológico
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-- **Front-End**: React, HTML5, CSS3
-- **Back-End**: Node.js, JavaScript
-- **Base de Dados**: PostgreSQL
-- **Ferramentas de Desenvolvimento**: Visual Studio Code, Docker
+### Advanced Configuration
 
-## Integração com API
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-- **Google API**: Utilizamos a API do Google para obter os melhores locais e vamos desenvolver um algoritmo para escolher os melhores lugares com base nas classificações e preferências.
+### Deployment
 
-## Equipe
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-Este projeto está a ser desenvolvido por:
-- [Sebastião Rusu(Eu)](https://github.com/SebasRusuu)
-- [Tomás Lebre](https://github.com/tomaslebre)
-- José Franco
+### `npm run build` fails to minify
 
-
-## Contribuição
-
-Aceitamos dicas para melhorar-mos :)
-
-## Licença
-
-Este projeto está licenciado sob os termos da [Licença Creative Commons Attribution-ShareAlike 4.0 International](./LICENSE).
-
-Copyright (c) 2024 Sebastião Rusu, Tomás Lebre, José Franco.
-
-És livre para:
-- Partilhar — copiar e redistribuir o material em qualquer meio ou formato
-- Adaptar — remixar, transformar e criar a partir do material para qualquer fim, mesmo comercialmente.
-
-Sob os seguintes termos:
-- Atribuição — Deve dar o crédito apropriado, fornecer um link para a licença e indicar se mudanças foram feitas. Pode fazê-lo de qualquer maneira razoável, mas não de forma que sugira que o licenciante te endossa ou ao teu uso.
-- PartilhaIgual — Se editares, transformares, ou criares a partir do material, deve distribuir as tuas contribuições sob a mesma licença que o original.
-
-Sem restrições adicionais — Não podes aplicar termos legais ou medidas tecnológicas que restrinjam legalmente outros de fazerem qualquer coisa que a licença permita.
-
-Consulte a licença completa em [Creative Commons](https://creativecommons.org/licenses/by-sa/4.0/).
-
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

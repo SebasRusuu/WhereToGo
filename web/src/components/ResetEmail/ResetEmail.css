@@ -1,0 +1,110 @@
+/* ResetEmail.css */
+.reset-email-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.email-container {
+    background-color: var(--bege);
+    padding: 50px;
+    border-radius: 10px;
+    width: 500px;
+    /* Aumentado de 400px para 500px */
+    min-height: 200px;
+    /* Adicionado para garantir uma altura mínima */
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.email-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.ponte-logo {
+    width: 70px;
+    height: auto;
+}
+
+.email-header h3 {
+    color: var(--blue);
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.email-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-email {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.container-email label {
+    display: block;
+    font-size: 10px;
+    color: var(--blue);
+    margin-bottom: 0px;
+    margin-left: 15px;
+    font-size: 15px;
+    align-items: center;
+}
+
+.txt {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid var(--blue);
+    font-size: 1em;
+    color: var(--blue);
+}
+
+.button-container {
+    width: 100%;
+    text-align: center;
+}
+
+.but-reset {
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 70px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.but-reset:hover {
+    background-color: var(--blue);
+}
+
+.reset-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.reset-terms {
+    text-align: center;
+    font-size: 0.8em;
+    color: #555;
+    margin-top: 20px;
+}
+
+.reset-terms p {
+    margin: 5px 0;
+}

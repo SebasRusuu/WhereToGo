@@ -1,0 +1,58 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.admin-dashboard {
+  padding: 2rem;
+  text-align: center;
+}
+
+.metrics {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 1rem;
+  
+}
+
+.metrics-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+  width: auto;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.metrics-card p {
+  font-size: 1.5em; /* Aumenta o tamanho da fonte dos valores */
+}
+
+.charts {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+}
+
+.tables {
+  margin-top: 2rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f4f4f4;
+}

@@ -1,0 +1,89 @@
+.login-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .login-modal-content {
+    background: #FEF1CC;
+    color: #001FA8;
+    padding: 20px;
+    border-radius: 15px;
+    width: 460px;
+    height: 450px;
+    text-align: left;
+    padding: 25px;
+    position: relative; /* For positioning the close button */
+  }
+  
+  .login-modal-header {
+    margin-bottom: 30px;
+  }
+  
+  .login-modal-button {
+    display: flex;
+    align-items: center; /* Centers the items vertically */
+    justify-content: flex-start; /* Aligns items to the left */
+    padding-left: 20px; /* Provides padding on the left */
+    text-align: left; /* Aligns text to the left */
+    width: 100%;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 30px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative; /* Sets the positioning context for absolute positioning inside */
+  }
+  
+  .terms-modal{
+    text-align: center;
+    margin-top: 23%;
+  
+  }
+  
+  .email-logo {
+    margin-right: 10px; /* Right margin to create space between the logo and the text */
+    height: 24px; /* Keep the logo size consistent */
+    width: auto; /* Maintain aspect ratio */
+  }
+  
+  .google-logo {
+    margin-right: 10px; /* Right margin to create space between the logo and the text */
+    height: 24px; /* Keep the logo size consistent */
+    width: auto; /* Maintain aspect ratio */
+  }
+  
+  .ponte-logo {
+    margin-right: 10px; /* Right margin to create space between the logo and the text */
+    height: 70px; /* Keep the logo size consistent */
+    width: auto; /* Maintain aspect ratio */
+  }
+  
+  .login-modal-button span {
+    flex-grow: 1; /* Allows the text to take up remaining space for centering */
+    text-align: center; /* Centers the text */
+  }
+  
+  
+  .login-modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  p {
+    font-size: 12px;
+    color: #666;
+  }

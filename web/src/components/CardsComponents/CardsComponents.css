@@ -1,0 +1,41 @@
+.containers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0px !important; /* Força a aplicação do estilo */
+    margin-bottom: 20px;
+  }
+  
+  .cards-row {
+    margin: 0 -15px; /* Reduz o espaçamento padrão do Bootstrap */
+  }
+  
+  
+  
+  .tag-container {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Aligns content vertically */
+    width: 100%;
+    padding: 7px 20px;
+    background-color: var(--bege);
+    border-radius: 15px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    color: var(--blue);
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 auto 10px; /* Centers it and adds space below */
+  }
+
+  .cards-container{
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: #FFFFFF; /* Cor de preenchimento branca */
+    border: 3px solid var(--bege); /* Cor da borda FEF1CC */
+    border-radius: 15px; /* Raio da borda */
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center; /* Centrahiliza o conteúdo verticalmente */
+  }

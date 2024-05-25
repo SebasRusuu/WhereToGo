@@ -1,0 +1,185 @@
+.login-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  /* Make sure this is above other page content */
+}
+
+.login-container {
+  width: 100%;
+  max-width: 600px;
+  /* Adjust width as needed */
+  padding: 50px;
+  background-color: var(--bege);
+  /* Light background color */
+  color: var(--blue);
+  border-radius: 10px;
+  position: relative;
+}
+
+
+.login-header {
+  margin-bottom: 30px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-title {
+  color: var(--blue);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.login-form label {
+  text-align: left;
+  margin-bottom: 5px;
+  margin-left: 20px;
+  font-size: 14px;
+  align-items: center;
+}
+
+
+.login-form input {
+  display: flex;
+  /* Centers the items vertically */
+  justify-content: flex-start;
+  /* Provides padding on the left */
+  text-align: left;
+  /* Aligns text to the left */
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  height: 55px;
+}
+.txt{
+  margin-bottom: 15px;
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; 
+}
+
+
+
+.but-login{
+  padding: 10px;
+  width: 40%;
+  align-items: center;
+  color: white;
+  border: none;
+  background-color: var(--blue);
+  border-radius: 45px;
+}
+
+.login-form button:hover {
+  background-color: var(--blue);
+}
+
+.login-links{
+  margin-top: -15px;
+  margin-left: 20px;
+}
+
+.login-nopass a {
+  display: block;
+  /* Ocupa a linha inteira, útil se quiser que seja clicável em toda a extensão */
+  color: var(--blue);
+  text-decoration: underline;
+  /* Aplica o sublinhado diretamente ao link */
+  font-size: 14px;
+  margin-top: 20px;
+  /* Espaçamento entre o link e o conteúdo acima, se necessário */
+}
+
+.login-register {
+  display: flex;
+  align-items: center;
+  
+}
+
+.account-query {
+  margin-right: 10px;
+  font-size: 14px;
+  line-height: 1.5; /* Garante a mesma altura da linha */
+  display: flex;
+  align-items: center;
+}
+
+.register-click {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--blue);
+  margin-bottom:16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.container-password{
+  margin-bottom: 15px;
+}
+
+/* .error-message{
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+
+}
+
+.wrong {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+} */
+
+
+
+.login-register a{
+  color: var(--blue);
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-register p {
+  font-size: 14px;
+  color: var(--blue);
+}
+
+.login-terms {
+  font-size: 12px;
+  color: #666;
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+.login-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
