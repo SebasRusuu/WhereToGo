@@ -35,7 +35,7 @@ We accept some advices :)
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the terms of the [MIT License](./LICENSE).
 
 
 # WhereToGo
@@ -50,8 +50,8 @@ This project is licensed under the MIT License.
 
 - **Roteiros Personalizados**: Roteiros feitos sob medida de acordo com as preferências e interesses dos utilizadores.
 - **WhereToEat**: Uma página dedicada a várias opções de restaurantes.
-- **Roteiros Guardados**: Uma página para roteiros guardados, viagens concluídas e próximas viagens para fácil edição.
-- **Página de Locais**: Com os locais mais bem avaliados.
+- **Roteiros Guardados**: Uma página para roteiros guardados para futuras viagens para possivel edição e roteiros concluídos.
+- **Página de Locais**: Com os locais mais bem avaliados para futuras viagens.
 - **Página de Classificações**: Os utilizadores podem deixar avaliações e ganhar pontos para futuros descontos em locais que desejam visitar.
 
 ## Stack Tecnológico
@@ -67,17 +67,17 @@ This project is licensed under the MIT License.
 
 ## Equipe
 
-Este projeto está sendo desenvolvido por:
+Este projeto está a ser desenvolvido por:
 - [Sebastião Rusu(Eu)](https://github.com/SebasRusuu)
 - [Tomás Lebre](https://github.com/tomaslebre)
 - José Franco
 
 
-## Contribuindo
+## Contribuição
 
 Aceitamos dicas para melhorar-mos :)
 
 ## Licença
 
-Este projeto está licenciado sob a licença MIT.
+Este projeto está licenciado sob os termos da [Licença MIT](./LICENSE).
 
