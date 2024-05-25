@@ -15,7 +15,7 @@
 - **Front-End**: React, HTML5, CSS3
 - **Back-End**: Node.js, JavaScript
 - **Database**: PostgreSQL
-- **Development Tools**: Visual Studio Code, Docker
+- **Development Tools**: Visual Studio Code, Docker, Git
 
 ## API Integration
 
@@ -24,37 +24,13 @@
 ## Team
 
 This project is being developed by:
-- Sebastião Rusu
+- Sebastião Rusu(Me)
 - Tomás Lebre
 - José Franco
 
-## Installation
-
-To run this project locally, follow these steps:
-
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/yourusername/WhereToGo.git
-    ```
-
-2. Navigate to the project directory:
-    ```sh
-    cd WhereToGo
-    ```
-
-3. Install dependencies:
-    ```sh
-    npm install
-    ```
-
-4. Run the application:
-    ```sh
-    npm start
-    ```
-
 ## Contributing
 
-We welcome contributions! Please fork the repository and submit a pull request for review.
+We accept some advices :)
 
 ## License
 
