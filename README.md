@@ -52,7 +52,6 @@ No additional restrictions — You may not apply legal terms or technological me
 View the full license at [Creative Commons](https://creativecommons.org/licenses/by-sa/4.0/).
 
 
-# WhereToGo
 
 ## Versão em Portugiuês
 
