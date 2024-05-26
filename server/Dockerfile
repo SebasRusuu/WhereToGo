@@ -1,5 +1,5 @@
 # Dockerfile para o servidor Node.js
-FROM node:14
+FROM node:18
 
 # Definir o diretório de trabalho no contêiner
 WORKDIR /server

@@ -11,21 +11,21 @@ services:
     build: ./server
     ports:
       - "4000:4000"
-    environment:
-      - DATABASE_URL=postgres://admin:admin@db:5432/mydb
-    volumes:
-      - ./web/build:/web/build
     depends_on:
       - db
 
   db:
-    image: postgis/postgis:13-3.1
+    image: postgis/postgis
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: mydb
     volumes:
+      - db_data:/var/lib/postgresql/data
       - ./data/sql/10_postgis.sh:/docker-entrypoint-initdb.d/10_postgis.sh
       - ./data/sql/20_database.sql:/docker-entrypoint-initdb.d/20_database.sql
     ports:
       - "5433:5432"
+
+volumes:
+  db_data:

@@ -2,12 +2,16 @@ const express = require('express');
 const path = require('path');
 const { Pool } = require('pg');
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 4000;
 
 // Configurar a conexão com o PostgreSQL
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_NAME,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT || 5432,
+  });
 
 // Middleware para servir arquivos estáticos da pasta build
 app.use(express.static(path.join(__dirname, '../web/build')));
