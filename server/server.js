@@ -1,16 +1,12 @@
 const express = require('express');
 const path = require('path');
-const { Pool } = require('pg'); // Adicione a importação do Pool do pg
+const { Pool } = require('pg');
 const app = express();
 const port = process.env.PORT || 4000;
 
 // Configurar a conexão com o PostgreSQL
 const pool = new Pool({
-  user: 'admin',
-  host: 'localhost',
-  database: 'mydb',
-  password: 'your_password',  // Substitua 'your_password' pela sua senha
-  port: 5432,
+  connectionString: process.env.DATABASE_URL
 });
 
 // Middleware para servir arquivos estáticos da pasta build
@@ -24,7 +20,7 @@ app.get('/api/data', (req, res) => {
 // Novo endpoint para obter usuários do banco de dados
 app.get('/api/users', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM "User"'); // Consulta a tabela User
+    const result = await pool.query('SELECT * FROM "userWtg"'); // Nome da tabela corrigido
     res.json(result.rows);
   } catch (error) {
     console.error('Erro ao buscar usuários:', error);
@@ -40,7 +36,7 @@ app.use((err, req, res, next) => {
 
 // Rota para servir o frontend React
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../web/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../web/build', 'index.html')); // Certifique-se de que o caminho está correto
 });
 
 // Iniciar o servidor

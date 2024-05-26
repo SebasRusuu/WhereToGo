@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  web:
+    build: ./web
+    ports:
+      - "3000:5000"
+    depends_on:
+      - server
+
+  server:
+    build: ./server
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgres://admin:admin@db:5432/mydb
+    volumes:
+      - ./web/build:/web/build
+    depends_on:
+      - db
+
+  db:
+    image: postgis/postgis:13-3.1
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mydb
+    volumes:
+      - ./data/sql/10_postgis.sh:/docker-entrypoint-initdb.d/10_postgis.sh
+      - ./data/sql/20_database.sql:/docker-entrypoint-initdb.d/20_database.sql
+    ports:
+      - "5433:5432"
