@@ -1,5 +1,5 @@
 # Dockerfile para a aplicação React
-FROM node:14
+FROM node:18
 
 # Definir o diretório de trabalho no contêiner
 WORKDIR /web
