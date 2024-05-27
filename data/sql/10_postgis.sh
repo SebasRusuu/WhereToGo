@@ -3,7 +3,6 @@ set -e
 
 # Define psql command with appropriate options
 psql=(psql --username "$POSTGRES_USER" --host "$POSTGRES_HOST" --port "$POSTGRES_PORT")
-
 # Load PostGIS into the $POSTGRES_DB
 echo "Loading PostGIS extensions into $POSTGRES_DB"
 "${psql[@]}" --dbname="$POSTGRES_DB" <<-'EOSQL'
