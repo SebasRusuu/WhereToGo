@@ -108,3 +108,18 @@
 .reset-terms p {
     margin: 5px 0;
 }
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .back-button img {
+    width: 24px;
+    height: auto;
+  }
+  

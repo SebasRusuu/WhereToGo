@@ -14,13 +14,6 @@ RUN npm install
 COPY . .
 
 # Compilar a aplicação React
-RUN npm run build
+CMD npm start
 
-# Instalar o servidor HTTP para servir o build do React
-RUN npm install -g serve
-
-# Comando para rodar a aplicação
-CMD ["serve", "-s", "build"]
-
-# Expor a porta que o servidor irá rodar
-EXPOSE 5000
+EXPOSE 3000

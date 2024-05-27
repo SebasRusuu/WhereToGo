@@ -6,10 +6,9 @@ import ponteLogo from '../../imgs/logos/logoponte.png';
 import closeIcon from '../../imgs/logos/close.png';
 import Login from '../Login';
 import Register from '../Register'; 
-import ResetPassword from '../ResetPassword';
 import ResetEmail from '../ResetEmail';
 
-function LoginModal({ isOpen, onClose }) {
+function LoginModal({ isOpen, onClose, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isResetEmailOpen, setIsResetEmailOpen] = useState(false);
@@ -57,7 +56,7 @@ function LoginModal({ isOpen, onClose }) {
           </div>
         </div>
       )}
-      {isLoginOpen && <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onRegisterOpen={handleRegisterOpen} onResetEmailOpen={handleResetEmail} />}
+      {isLoginOpen && <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onRegisterOpen={handleRegisterOpen} onResetEmailOpen={handleResetEmail} onLogin={onLogin} />}
       {isResetEmailOpen && <ResetEmail isOpen={isResetEmailOpen} onClose={() => setIsResetEmailOpen(false)} />}
       {isRegisterOpen && <Register isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />}
     </>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Register.css';
+import backIcon from '../../imgs/logos/back.png';  // Adicione um ícone de back
 
 function Register({ isOpen, onClose }) {
   const [firstName, setFirstName] = useState('');
@@ -10,25 +11,29 @@ function Register({ isOpen, onClose }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordWrong, setPasswordWrong] = useState(false);
 
+  const handleBack = () => {
+    onClose();
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     // Verificação dos campos vazios
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setErrorMessage("Todos os campos são obrigatórios!");
       return;
     }
-
+  
     // Verificação se as senhas coincidem
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       setPasswordWrong(true);
       return;
     }
-
+  
     setPasswordWrong(false);
     setErrorMessage('');
-
+  
     try {
       const response = await fetch("http://localhost:4000/register", {
         method: "POST",
@@ -42,7 +47,7 @@ function Register({ isOpen, onClose }) {
           password
         }),
       });
-
+  
       if (response.ok) {
         alert("Registration successful!");
         onClose();
@@ -60,6 +65,9 @@ function Register({ isOpen, onClose }) {
   return (
     <div className="register-backdrop" onClick={onClose}>
       <div className="register-container" onClick={e => e.stopPropagation()}>
+        <button onClick={handleBack} className="back-button">
+          <img src={backIcon} alt="Back" />
+        </button>
         <h1>Junta-te a nós!</h1>
         <form className="register-form" onSubmit={handleSubmit}>
           <label htmlFor="firstName">Primeiro Nome</label>

@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import logoImage from '../../imgs/logos/logoponte.png';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import LoginModal from '../LoginModal';
 
-
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Verificar se o usuário está autenticado ao carregar o componente
+    const loggedIn = localStorage.getItem('isAuthenticated');
+    if (loggedIn) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(isMenuOpen => !isMenuOpen);
+  };
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    localStorage.setItem('isAuthenticated', 'true');
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('isAuthenticated');
   };
 
   const navMotions = {
@@ -24,8 +43,6 @@ function Header() {
       }
     }
   };
-
-
 
   return (
     <header className="header">
@@ -52,11 +69,17 @@ function Header() {
           <motion.div className="nav-content" variants={navMotions} whileHover="hover">WhereToEat</motion.div>
         </Link>
         <div className="login-button-container">
-          <motion.button className="login-button" onClick={() => setIsLoginModalOpen(true)}>
-            Iniciar Sessão
-          </motion.button>
+          {isAuthenticated ? (
+            <motion.button className="login-button" onClick={handleLogout}>
+              Logout
+            </motion.button>
+          ) : (
+            <motion.button className="login-button" onClick={() => setIsLoginModalOpen(true)}>
+              Iniciar Sessão
+            </motion.button>
+          )}
         </div>
-        <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+        <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onLogin={handleLogin} />
       </nav>
     </header>
   );
