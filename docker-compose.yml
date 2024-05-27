@@ -7,16 +7,14 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - .:/web
+      - ./web/build:/web/build
     depends_on:
-      - db
+      - server
 
   server:
     build: ./server
     ports:
       - "4000:4000"
-    volumes:
-      - ./web/build:/web/build
     depends_on:
       - db
 

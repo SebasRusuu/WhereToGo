@@ -10,7 +10,17 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "are-we-there-yet": "^4.0.2",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
-    "pg": "^8.11.5"
+    "gauge": "^5.0.2",
+    "glob": "^10.4.1",
+    "inflight": "^1.0.6",
+    "lru-cache": "^10.2.2",
+    "npmlog": "^7.0.1",
+    "path-browserify": "^1.0.1",
+    "pg": "^8.11.5",
+    "rimraf": "^5.0.7"
   }
 }
