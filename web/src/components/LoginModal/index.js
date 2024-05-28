@@ -5,13 +5,16 @@ import googleLogo from '../../imgs/logos/google.png';
 import ponteLogo from '../../imgs/logos/logoponte.png';
 import closeIcon from '../../imgs/logos/close.png';
 import Login from '../Login';
-import Register from '../Register'; 
+import Register from '../Register';
 import ResetEmail from '../ResetEmail';
+import ResetPassword from '../ResetPassword';
 
 function LoginModal({ isOpen, onClose, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isResetEmailOpen, setIsResetEmailOpen] = useState(false);
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
+  const [token, setToken] = useState('');
 
   const handleEmailClick = () => {
     setIsLoginOpen(true);
@@ -20,15 +23,26 @@ function LoginModal({ isOpen, onClose, onLogin }) {
 
   const handleRegisterOpen = () => {
     setIsRegisterOpen(true);
-    setIsLoginOpen(false); 
+    setIsLoginOpen(false);
   };
 
   const handleResetEmail = () => {
     setIsLoginOpen(false);
-    setIsResetEmailOpen(true); 
+    setIsResetEmailOpen(true);
   };
 
-  if (!isOpen && !isLoginOpen && !isRegisterOpen && !isResetEmailOpen) return null;
+  const handleOpenResetPassword = (token) => {
+    setToken(token);
+    setIsResetPasswordOpen(true);
+    setIsResetEmailOpen(false); // Close the ResetEmail pop-up if open
+  };
+
+  const handleCloseResetPassword = () => {
+    setIsResetPasswordOpen(false);
+    setToken('');
+  };
+
+  if (!isOpen && !isLoginOpen && !isRegisterOpen && !isResetEmailOpen && !isResetPasswordOpen) return null;
 
   return (
     <>
@@ -57,8 +71,9 @@ function LoginModal({ isOpen, onClose, onLogin }) {
         </div>
       )}
       {isLoginOpen && <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onRegisterOpen={handleRegisterOpen} onResetEmailOpen={handleResetEmail} onLogin={onLogin} />}
-      {isResetEmailOpen && <ResetEmail isOpen={isResetEmailOpen} onClose={() => setIsResetEmailOpen(false)} />}
+      {isResetEmailOpen && <ResetEmail isOpen={isResetEmailOpen} onClose={() => setIsResetEmailOpen(false)} onOpenResetPassword={handleOpenResetPassword} />}
       {isRegisterOpen && <Register isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />}
+      {isResetPasswordOpen && <ResetPassword isOpen={isResetPasswordOpen} onClose={handleCloseResetPassword} token={token} />}
     </>
   );
 }

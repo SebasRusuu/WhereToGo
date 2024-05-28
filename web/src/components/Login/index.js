@@ -107,6 +107,3 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
 }
 
 export default Login;
-
-
-
