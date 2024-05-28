@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import closeIcon from '../../imgs/logos/close.png';
 import ponteLogo from '../../imgs/logos/logoponte.png';
 import './Reset.css';
@@ -8,6 +9,7 @@ function ResetPassword({ isOpen, onClose, token }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isValidToken, setIsValidToken] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -15,6 +17,7 @@ function ResetPassword({ isOpen, onClose, token }) {
         const response = await fetch(`http://localhost:4000/verify-reset-token?token=${token}`);
         if (response.ok) {
           setIsValidToken(true);
+          navigate('/reset-password', { replace: true }); // Remover o token da URL
         } else {
           const data = await response.json();
           setMessage(data.error || 'Invalid or expired token.');
@@ -29,7 +32,7 @@ function ResetPassword({ isOpen, onClose, token }) {
     if (token) {
       verifyToken();
     }
-  }, [token]);
+  }, [token, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

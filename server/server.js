@@ -68,6 +68,24 @@ app.get('/users', async (req, res) => {
   }
 });
 
+// src/server.js
+
+app.post('/check-email', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const result = await pool.query('SELECT * FROM "userwtg" WHERE email = $1', [email]);
+    if (result.rows.length > 0) {
+      res.status(200).json({ exists: true });
+    } else {
+      res.status(200).json({ exists: false });
+    }
+  } catch (error) {
+    console.error('Erro ao verificar e-mail:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   console.log('Received registration data:', { firstName, lastName, email, password });

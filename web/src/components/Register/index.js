@@ -1,3 +1,5 @@
+// src/components/Register.js
+
 import React, { useState } from 'react';
 import './Register.css';
 import backIcon from '../../imgs/logos/back.png';  // Adicione um ícone de back
@@ -15,12 +17,37 @@ function Register({ isOpen, onClose }) {
     onClose();
   };
 
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await fetch('http://localhost:4000/check-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error('Erro ao verificar e-mail:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
   
     // Verificação dos campos vazios
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setErrorMessage("Todos os campos são obrigatórios!");
+      return;
+    }
+
+    // Verificação se o e-mail já está registrado
+    const emailExists = await checkEmailExists(email);
+    if (emailExists) {
+      setErrorMessage("O e-mail já está registrado!");
       return;
     }
   

@@ -1,3 +1,5 @@
+// src/components/Login.js
+
 import React, { useState } from 'react';
 import './Login.css';
 import closeIcon from '../../imgs/logos/close.png';
@@ -31,8 +33,7 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
       if (response.ok) {
         alert("Login successful!");
         onLogin();
-        window.close();
-       
+        onClose();  // Close the pop-up on successful login
       } else {
         const errorData = await response.json();
         setErrorMessage(` ${errorData.error}`);

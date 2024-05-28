@@ -1,3 +1,5 @@
+// src/components/LoginModal.js
+
 import React, { useState, useEffect } from 'react';
 import './LoginModal.css';
 import emailLogo from '../../imgs/logos/mail.png';
