@@ -6,6 +6,7 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 const app = express();
@@ -119,7 +120,7 @@ app.post('/forgot-password', async (req, res) => {
     }
 
     const user = result.rows[0];
-    
+
     // Check if a reset request was made in the last 5 minutes
     if (user.reset_token_expires && new Date(user.reset_token_expires) > new Date()) {
       const timeLeft = Math.ceil((new Date(user.reset_token_expires) - new Date()) / 60000);
@@ -143,6 +144,7 @@ app.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 app.get('/verify-reset-token', async (req, res) => {
   const { token } = req.query;

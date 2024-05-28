@@ -11,6 +11,7 @@ import Contactos from './pages/Contactos';
 import LoginModal from "./components/LoginModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Admin from "./components/AdminDashboard";
+import ResetPassword from "./components/ResetPassword";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
@@ -40,6 +41,7 @@ function App() {
             <Route path="/contactos" element={<Contactos />} />
             <Route path="/login" element={<LoginModal />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </div>
         

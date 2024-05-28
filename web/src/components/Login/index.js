@@ -9,11 +9,11 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleChangeToRegisterClick = () => {
-    onRegisterOpen(); 
+    onRegisterOpen();
   };
 
   const handleResetEmail = () => {
-    onResetEmailOpen(); 
+    onResetEmailOpen();
   };
 
   const handleSubmit = async (event) => {
@@ -31,12 +31,14 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
       if (response.ok) {
         alert("Login successful!");
         onLogin();
+        window.close();
+       
       } else {
         const errorData = await response.json();
-        setErrorMessage(`Login failed: ${errorData.error}`);
+        setErrorMessage(` ${errorData.error}`);
       }
     } catch (error) {
-      setErrorMessage(`Login failed: ${error.message}`);
+      setErrorMessage(` ${error.message}`);
     }
   };
 

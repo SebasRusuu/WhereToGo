@@ -49,6 +49,7 @@ function ResetPassword({ isOpen, onClose, token }) {
 
       if (response.ok) {
         setMessage('Password reset successful!');
+        window.location.href = '/';
       } else {
         setMessage('Error resetting password.');
       }
