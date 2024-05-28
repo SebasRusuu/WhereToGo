@@ -5,7 +5,8 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const { google } = require('googleapis');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 const port = 4000;
@@ -21,34 +22,20 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Configurações do OAuth2
-const CLIENT_ID = '1037399482226-ifb6jtilnnOum5ahmop6rnt6252kbfa2.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//048rpDqTP4hVYCgYIARAAGAQSNwF-L9IrQXVhYa-7rC_4JjUslr-dPhrdwiosy53f5wXcFPzEMczcD0WSsjH3047h4aXQRsIUI1w';
-
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+// Configurações do SMTP
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 async function sendResetEmail(email, resetLink) {
   try {
-    const accessToken = await oAuth2Client.getAccessToken();
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: 'wheretogogeral@gmail.com',
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken.token,
-      },
-    });
-
     const mailOptions = {
       to: email,
-      from: 'wheretogogeral@gmail.com',
+      from: process.env.EMAIL,
       subject: 'Password Reset',
       text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
@@ -132,8 +119,15 @@ app.post('/forgot-password', async (req, res) => {
     }
 
     const user = result.rows[0];
+    
+    // Check if a reset request was made in the last 5 minutes
+    if (user.reset_token_expires && new Date(user.reset_token_expires) > new Date()) {
+      const timeLeft = Math.ceil((new Date(user.reset_token_expires) - new Date()) / 60000);
+      return res.status(429).json({ error: `Please wait ${timeLeft} minutes before requesting another password reset.` });
+    }
+
     const resetToken = crypto.randomBytes(20).toString('hex');
-    const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hour from now
+    const resetTokenExpires = new Date(Date.now() + 300000); // 5 minutes from now
 
     await pool.query(
       'UPDATE "userwtg" SET reset_token = $1, reset_token_expires = $2 WHERE email = $3',
@@ -144,12 +138,30 @@ app.post('/forgot-password', async (req, res) => {
 
     await sendResetEmail(email, resetLink);
 
-    res.status(200).json({ message: 'Reset email sent', token: resetToken }); // Include the token in the response
+    res.status(200).json({ message: 'Reset email sent', token: resetToken });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+app.get('/verify-reset-token', async (req, res) => {
+  const { token } = req.query;
+
+  try {
+    const result = await pool.query('SELECT * FROM "userwtg" WHERE reset_token = $1 AND reset_token_expires > $2', [
+      token,
+      new Date(),
+    ]);
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
+    }
+
+    res.status(200).json({ message: 'Valid token' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.post('/reset-password', async (req, res) => {
   const { token, newPassword } = req.body;

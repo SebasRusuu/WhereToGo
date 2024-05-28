@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import closeIcon from '../../imgs/logos/close.png';
 import ponteLogo from '../../imgs/logos/logoponte.png';
-import backIcon from '../../imgs/logos/back.png';  // Adicione um ícone de back
+import backIcon from '../../imgs/logos/back.png';  
 import './ResetEmail.css';
 
-function ResetEmail({ isOpen, onClose, onOpenResetPassword }) {
+function ResetEmail({ isOpen, onClose }) {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
@@ -24,14 +24,13 @@ function ResetEmail({ isOpen, onClose, onOpenResetPassword }) {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setMessage('Um link de redefinição de senha foi enviado para o seu email.');
-        onOpenResetPassword(data.token); // Pass the token to open the ResetPassword pop-up
+        setMessage('A password reset link has been sent to your email.');
       } else {
-        setMessage('Erro ao enviar o email de redefinição de senha.');
+        const errorData = await response.json();
+        setMessage(errorData.error || 'Error sending password reset email.');
       }
     } catch (error) {
-      setMessage('Erro ao enviar o email de redefinição de senha.');
+      setMessage('Error sending password reset email.');
     }
   };
 
@@ -44,12 +43,12 @@ function ResetEmail({ isOpen, onClose, onOpenResetPassword }) {
         </button>
         <div className="email-header">
           <img src={ponteLogo} alt="Ponte" className="ponte-logo" />
-          <h3><b>Insere o e-mail que deseja mudar a password</b></h3>
+          <h3><b>Enter the email to reset the password</b></h3>
         </div>
 
         <form className="email-form" onSubmit={handleSubmit}>
           <div className='container-email'>
-            <label htmlFor="email">Endereço de email</label>
+            <label htmlFor="email">Email Address</label>
             <input
               className="txt"
               type="email"

@@ -34,32 +34,6 @@ function Register({ isOpen, onClose }) {
     setPasswordWrong(false);
     setErrorMessage('');
 
-    // Check se já existe um utilizador com o mesmo email
-    try {
-      const response = await fetch("http://localhost:4000/users", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (response.ok) {
-        const users = await response.json();
-        const user = users.find(user => user.email === email);
-        if (user) {
-          setErrorMessage("Email já em uso!");
-          return;
-        }
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(`Failed to check if email is already in use: ${errorData.error}`);
-        return;
-      }
-    } catch (error) {
-      setErrorMessage(`Failed to check if email is already in use: ${error.message}`);
-      return;
-    }
-
     // Registro do usuário
     try {
       const response = await fetch("http://localhost:4000/register", {

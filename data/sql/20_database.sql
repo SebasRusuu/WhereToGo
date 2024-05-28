@@ -36,7 +36,9 @@ CREATE TABLE userWtg (
     firstName VARCHAR(30),
     lastName VARCHAR(30),
     email VARCHAR(50),
-    password_hash VARCHAR(255) NOT NULL
+    password_hash VARCHAR(255) NOT NULL,
+    reset_token VARCHAR(255),
+    reset_token_expires TIMESTAMP
 );
 
 CREATE TABLE Interesse (
