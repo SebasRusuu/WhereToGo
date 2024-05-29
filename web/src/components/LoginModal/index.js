@@ -1,9 +1,6 @@
-// src/components/LoginModal.js
-
 import React, { useState, useEffect } from 'react';
 import './LoginModal.css';
 import emailLogo from '../../imgs/logos/mail.png';
-import googleLogo from '../../imgs/logos/google.png';
 import ponteLogo from '../../imgs/logos/logoponte.png';
 import closeIcon from '../../imgs/logos/close.png';
 import Login from '../Login';
@@ -11,6 +8,9 @@ import Register from '../Register';
 import ResetEmail from '../ResetEmail';
 import ResetPassword from '../ResetPassword';
 import { useLocation } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+
 
 function LoginModal({ isOpen, onClose, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -65,7 +65,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
   const handleOpenResetPassword = (token) => {
     setToken(token);
     setIsResetPasswordOpen(true);
-    setIsResetEmailOpen(false); // Close the ResetEmail pop-up if open
+    setIsResetEmailOpen(false);
   };
 
   const handleCloseResetPassword = () => {
@@ -85,10 +85,15 @@ function LoginModal({ isOpen, onClose, onLogin }) {
               <h3><b>Entre e explore o melhor com WhereToGo.</b></h3>
             </div>
             <div className='login-modal-container'>
-              <button className="login-modal-button">
-                <img src={googleLogo} alt="Google" className="google-logo" />
-                <span>Continue with Google</span>
-              </button>
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  const decoded = jwtDecode(credentialResponse?.credential);
+                  console.log(decoded);
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
               <button className="login-modal-button" onClick={handleEmailClick}>
                 <img src={emailLogo} alt="Email" className="email-logo" />
                 <span>Continue with Email</span>
