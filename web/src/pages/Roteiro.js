@@ -44,7 +44,7 @@ export default function Roteiro() {
   return (
     <div>
       <APIProvider apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-        <div style={{ height: "100vh", width: "100%" }}>
+        <div style={{ height: "70vh", width: "70%", margin: "auto",  borderRadius: "20px", overflow: "hidden" }}>
           {initialCenter ? (
             <Map
               defaultZoom={initialZoom} // Define o zoom inicial
