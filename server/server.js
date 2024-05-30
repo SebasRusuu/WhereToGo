@@ -210,6 +210,32 @@ app.post('/reset-password', async (req, res) => {
   }
 });
 
+app.get('/place-details', async (req, res) => {
+  const { place_id } = req.query;
+  const apiKey = process.env.GOOGLE_API_KEY;
+
+  if (!place_id) {
+    return res.status(400).json({ error: 'place_id is required' });
+  }
+
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,rating,price_level,user_ratings_total,geometry.location&key=${apiKey}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.status === 'OK') {
+      res.json(data.result);
+    } else {
+      console.error('Error fetching place details:', data);
+      res.status(500).json({ error: data.status, message: data.error_message });
+    }
+  } catch (error) {
+    console.error('Error fetching place details:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
