@@ -1,0 +1,137 @@
+.roteiro-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.roteiro-container {
+  background-color: #FEF1CC;
+  color: var(--blue);
+  padding: 50px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  text-align: left;
+  position: relative;
+  margin: 20px 0;
+}
+
+.roteiro-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os elementos no eixo horizontal */
+  color: var(--blue);
+  font-weight: bold;
+  font-family: Inter, sans-serif;
+}
+
+.roteiro-form label {
+  margin-left: 20px;
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.question-container {
+  background-color: #EADDCA;
+  padding: 10px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  width: 100%; /* Faz o container ocupar toda a largura disponível */
+}
+
+.roteiro-form select {
+  width: 100%;
+  padding: 10px 20px;
+  margin-bottom: 15px;
+  border-radius: 30px;
+  background-color: white;
+  border: 2px solid #001FA8;
+  font-size: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Estilização das checkboxes */
+.roteiro-form input[type="checkbox"] {
+  display: none;
+}
+
+.roteiro-form input[type="checkbox"] + label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  padding-left: 35px; /* Espaço para o quadrado */
+  margin-bottom: 15px;
+  
+}
+
+.roteiro-form input[type="checkbox"] + label:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #001FA8;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  border-radius: 5px;
+}
+
+.roteiro-form input[type="checkbox"]:checked + label:before {
+  background-color: #001FA8;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-button {
+  padding: 10px 50px; /* Ajuste do espaçamento interno */
+  color: white;
+  border: none;
+  background-color: var(--blue);
+  border-radius: 25px; /* Bordas arredondadas */
+  margin-top: 20px; /* Espaço acima do botão */
+  text-align: center; /* Centraliza o texto */
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.submit-button:active {
+  transform: scale(0.95);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
