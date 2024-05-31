@@ -5,14 +5,6 @@ import './BodyContactos.css';
 import bridgeImage from '../../imgs/imagens/ponte_azul.png';
 
 function BodyContactos() {
-    const textContainerVariants = {
-        hidden: { x: '-50vw', opacity: 0 },
-        visible: {
-          x: 0,
-          opacity: 1,
-          transition: { duration: 0.5, type: 'spring', stiffness: 120 }
-        },
-    };
 
     const imageVariants = {
         hidden: { x: '50vw', opacity: 0 },

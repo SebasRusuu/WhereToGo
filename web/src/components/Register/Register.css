@@ -18,8 +18,19 @@
   width: 100%;
   max-width: 600px;
   border-radius: 10px;
-  text-align: left;
   position: relative;
+}
+
+.register-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ponte-logo {
+  width: 100px;
+  height: auto;
 }
 
 .register-form {
@@ -44,16 +55,23 @@
 }
 
 .register-button {
-  width: 100%;
   padding: 10px;
-  background-color: #0047ab;
+  width: 40%;
+  align-items: center;
   color: white;
-  border-radius: 5px;
-  cursor: pointer;
+  border: none;
+  background-color: var(--blue);
+  border-radius: 45px;
 }
 
 .register-button:hover {
   background-color: #003580;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .terms, .recaptcha {
@@ -70,19 +88,12 @@
 }
 
 
-.error-message{
+.error-message {
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
-
 }
 
 .wrong {
   border: 1px solid red;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }

@@ -1,8 +1,7 @@
-// src/components/Register.js
-
 import React, { useState } from 'react';
 import './Register.css';
-import backIcon from '../../imgs/logos/back.png';  // Adicione um ícone de back
+import backIcon from '../../imgs/logos/back.png';
+import ponteLogo from '../../imgs/logos/logoponte.png';
 
 function Register({ isOpen, onClose }) {
   const [firstName, setFirstName] = useState('');
@@ -38,20 +37,17 @@ function Register({ isOpen, onClose }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    // Verificação dos campos vazios
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setErrorMessage("Todos os campos são obrigatórios!");
       return;
     }
 
-    // Verificação se o e-mail já está registrado
     const emailExists = await checkEmailExists(email);
     if (emailExists) {
       setErrorMessage("O e-mail já está registrado!");
       return;
     }
   
-    // Verificação se as senhas coincidem
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       setPasswordWrong(true);
@@ -61,7 +57,6 @@ function Register({ isOpen, onClose }) {
     setPasswordWrong(false);
     setErrorMessage('');
 
-    // Registro do usuário
     try {
       const response = await fetch("http://localhost:4000/register", {
         method: "POST",
@@ -96,7 +91,10 @@ function Register({ isOpen, onClose }) {
         <button onClick={handleBack} className="back-button">
           <img src={backIcon} alt="Back" />
         </button>
-        <h1>Junta-te a nós!</h1>
+        <div className="register-header">
+          <img src={ponteLogo} alt="Ponte" className="ponte-logo" />
+          <h1>Junta-te a nós!</h1>
+        </div>
         <form className="register-form" onSubmit={handleSubmit}>
           <label htmlFor="firstName">Primeiro Nome</label>
           <input
@@ -150,7 +148,9 @@ function Register({ isOpen, onClose }) {
             className={passwordWrong ? 'wrong' : ''}
           />
           {errorMessage && <p className="error-message">{errorMessage}</p>}
-          <button type="submit" className="register-button">Registe-se</button>
+          <div className="button-container">
+            <button type="submit" className="register-button">Registe-se</button>
+          </div>
         </form>
       </div>
     </div>

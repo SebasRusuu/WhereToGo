@@ -236,6 +236,105 @@ app.get('/place-details', async (req, res) => {
 });
 
 
+app.get('/place-stats', async (req, res) => {
+  const { city, type } = req.query; // Obtém cidade e tipo dos parâmetros de consulta
+  const apiKey = process.env.GOOGLE_API_KEY;
+
+  // Verifica se os parâmetros city e type foram fornecidos
+  if (!city || !type) {
+    return res.status(400).json({ error: 'city and type are required' });
+  }
+
+  // URL da API do Google Places para buscar lugares por cidade e tipo
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
+
+  try {
+    const response = await fetch(url); // Faz a requisição para a API do Google Places
+    const data = await response.json(); // Converte a resposta em JSON
+    if (data.status !== 'OK') {
+      console.error('Error from Google Places API:', data);
+      return res.status(500).json({ error: data.status, message: data.error_message });
+    }
+
+    // Filtra os lugares para considerar apenas aqueles com mais de 100 avaliações
+    const places = data.results.filter(place => place.user_ratings_total > 100);
+    // Extrai as avaliações (ratings) dos lugares filtrados
+    const ratings = places.map(place => place.rating).filter(rating => rating !== undefined);
+
+    // Verifica se há avaliações suficientes para calcular as estatísticas
+    if (ratings.length === 0) {
+      return res.status(404).json({ error: 'No ratings found for the specified city and type with more than 100 reviews' });
+    }
+
+    // Calcula o total de avaliações
+    const totalRatings = ratings.reduce((sum, rating) => sum + rating, 0);
+    // Calcula a média das avaliações
+    const averageRating = totalRatings / ratings.length;
+    const marginOfError = 0.5; // Margem de erro fixa
+    const minRating = Math.min(...ratings); // Obtém a menor avaliação
+    const maxRating = Math.max(...ratings); // Obtém a maior avaliação
+
+    // Cria um objeto com as estatísticas
+    const stats = {
+      averageRating: averageRating.toFixed(2), // Formata a média para 2 casas decimais
+      marginOfError: marginOfError.toFixed(2), // Formata a margem de erro para 2 casas decimais
+      minRating, // Pior avaliação
+      maxRating // Melhor avaliação
+    };
+
+    res.json(stats); // Retorna as estatísticas como resposta
+  } catch (error) {
+    console.error('Error fetching place stats:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+
+
+const fetchPlaceCounts = async (type) => {
+  const apiKey = process.env.GOOGLE_API_KEY;
+  const cities = ["Lisboa", "Sintra", "Vila Nova de Gaia", "Porto", "Cascais"];
+  const results = {};
+
+  for (const city of cities) {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.status === 'OK') {
+        results[city] = data.results.length;
+      } else {
+        console.error(`Error from Google Places API for ${city}:`, data);
+        results[city] = 0;
+      }
+    } catch (error) {
+      console.error(`Error fetching places for ${city}:`, error);
+      results[city] = 0;
+    }
+  }
+
+  return results;
+};
+
+// Nova rota para obter a quantidade de locais por cidade
+app.get('/place-counts', async (req, res) => {
+  const { type } = req.query;
+  if (!type) {
+    return res.status(400).json({ error: 'type is required' });
+  }
+
+  try {
+    const counts = await fetchPlaceCounts(type);
+    res.json(counts);
+  } catch (error) {
+    console.error('Error fetching place counts:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');

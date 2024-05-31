@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './RoteiroForms.css';
 
 function RoteiroForms({ onClose }) {
@@ -14,6 +15,8 @@ function RoteiroForms({ onClose }) {
     rooftop: false,
   });
 
+  const navigate = useNavigate();
+
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     setVisitOptions({ ...visitOptions, [name]: checked });
@@ -22,11 +25,14 @@ function RoteiroForms({ onClose }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const selectedOptions = Object.keys(visitOptions).filter(key => visitOptions[key]);
-    console.log({
+    const formData = {
       region,
       eatDuringTrip,
       selectedOptions
-    });
+    };
+
+    // Navigate to the roteirosLoc page with form data
+    navigate('/roteiros-loc', { state: { formData } });
   };
 
   return (

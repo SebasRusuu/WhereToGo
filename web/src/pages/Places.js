@@ -16,14 +16,14 @@ function Places() {
   };
 
   // Variantes para a animação da imagem
-  const imageVariants = {
-    hidden: { x: '50vw', opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.5, type: 'spring', stiffness: 120 }
-    },
-  };
+  // const imageVariants = {
+  //   hidden: { x: '50vw', opacity: 0 },
+  //   visible: {
+  //     x: 0,
+  //     opacity: 1,
+  //     transition: { duration: 0.5, type: 'spring', stiffness: 120 }
+  //   },
+  // };
 
   // Variante para a animação do card
   const cardVariants = {

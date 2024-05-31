@@ -12,6 +12,7 @@ import LoginModal from "./components/LoginModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Admin from "./components/AdminDashboard";
 import ResetPassword from "./components/ResetPassword";
+import RoteirosLoc from "./components/RoteiroLoc";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
@@ -33,7 +34,7 @@ function App() {
         <div className="main-container">
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
             <Route path="/places" element={<Places />} />
             <Route path="/wheretoeat" element={<Eat />} />
             <Route path="/reviews" element={<Reviews />} />
@@ -42,6 +43,7 @@ function App() {
             <Route path="/login" element={<LoginModal />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/roteiros-loc" element={<RoteirosLoc />} />
           </Routes>
         </div>
         
