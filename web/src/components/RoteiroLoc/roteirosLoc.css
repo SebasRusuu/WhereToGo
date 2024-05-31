@@ -21,23 +21,37 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  
 }
 
-.roteiro-input {
-  width: 50%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
+.roteiro-name input {
+  width: 200px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-right: 15px;
+  background-color: #EADDCA; 
+  color: #8b4513; 
+  font-size: 16px; 
+  border: none;
+  align-items: center;
+  height: 50px;
+  display: inline-block; 
 }
 
 .create-roteiro-button {
+  width: 70%;
   padding: 10px 20px;
-  background-color: #0047ab;
-  color: white;
+  border-radius: 20px;
+  margin-right: 15px;
+  background: linear-gradient(90deg, #0047ab, #000080); 
+  color: white; 
+  font-size: 16px; 
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  align-items: center;
+  height: 50px;
+  display: inline-block;
+  padding-left: 20px; 
+
 }
 
 .roteiro-title {
@@ -53,33 +67,50 @@
   
 }
 
-.roteiro-container {
-  width: 100%;
-  align-items: center;
-  padding-left: 50px;
-}
 
+ 
+.roteiro-container {
+  width: 90%;
+  align-items: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 950px;
+}
 .roteiro-section {
-  width: 45%;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .roteiro-section h2 {
   margin-bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  white-space: nowrap;
+  
 }
 
 .roteiro-list {
   list-style: none;
   padding: 0;
+  width: 100%;
 }
 
 .roteiro-list li {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* Alterar para justificar conteúdo */
   align-items: center;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 5px;
+  background-color: #EADDCA;
+  padding: 35px; /* Aumentar o padding para maior altura */
+  border-radius: 15px;
   margin-bottom: 10px;
+  width: 400px; /* Aumentar a largura dos itens de lista */
+  margin-left: auto; /* Centralizar os itens de lista */
+  margin-right: auto; /* Centralizar os itens de lista */
 }
 
 .add-button {
@@ -87,6 +118,8 @@
   border: none;
   cursor: pointer;
   font-size: 20px;
+  margin-right: auto;
+  color: var(--blue);
 }
 
 .roteiro-location {
@@ -107,4 +140,13 @@
 .map-wrapper {
   height: 100%;
   width: 100%;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--blue);
+  
 }

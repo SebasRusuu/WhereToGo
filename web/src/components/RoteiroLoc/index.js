@@ -53,14 +53,18 @@ export default function RoteirosLoc() {
             <ul className="roteiro-list">
               <li>
                 <span>Local 1</span>
-                <button className="delete-button">🗑️</button>
+                <button className="delete-button">x</button>
               </li>
               <li>
                 <span>Local 2</span>
-                <button className="delete-button">🗑️</button>
+                <button className="delete-button">x</button>
               </li>
               <li>
                 <span>Local 3</span>
+                <button className="delete-button">🗑️</button>
+              </li>
+              <li>
+                <span>Local 4</span>
                 <button className="delete-button">🗑️</button>
               </li>
             </ul>
@@ -72,6 +76,8 @@ export default function RoteirosLoc() {
               <li><button className="add-button">+</button></li>
               <li><button className="add-button">+</button></li>
               <li><button className="add-button">+</button></li>
+              <li><button className="add-button">+</button></li>
+              
             </ul>
           </div>
         </div>
