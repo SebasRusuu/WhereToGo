@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -126,6 +127,23 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+app.post('/google-login', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const result = await pool.query('INSERT INTO "userwtg" (email) VALUES ($1) ON CONFLICT (email) DO NOTHING RETURNING *', [email]);
+    if (result.rows.length > 0) {
+      res.status(201).json({ message: 'Email saved successfully!' });
+    } else {
+      res.status(200).json({ message: 'Email already exists.' });
+    }
+  } catch (error) {
+    console.error('Error saving email:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 app.post('/forgot-password', async (req, res) => {
   const { email } = req.body;

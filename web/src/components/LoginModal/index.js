@@ -11,7 +11,6 @@ import { useLocation } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
-
 function LoginModal({ isOpen, onClose, onLogin }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -73,6 +72,26 @@ function LoginModal({ isOpen, onClose, onLogin }) {
     setToken('');
   };
 
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    const decoded = jwtDecode(credentialResponse?.credential);
+    const email = decoded.email;
+    try {
+      const response = await fetch('http://localhost:4000/google-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (response.ok) {
+        console.log('Email saved successfully');
+        onLogin();
+      } else {
+        console.error('Failed to save email');
+      }
+    } catch (error) {
+      console.error('Error saving email:', error);
+    }
+  };
+
   if (!isOpen && !isLoginOpen && !isRegisterOpen && !isResetEmailOpen && !isResetPasswordOpen) return null;
 
   return (
@@ -86,10 +105,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
             </div>
             <div className='login-modal-container'>
               <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  const decoded = jwtDecode(credentialResponse?.credential);
-                  console.log(decoded);
-                }}
+                onSuccess={handleGoogleLoginSuccess}
                 onError={() => {
                   console.log('Login Failed');
                 }}
