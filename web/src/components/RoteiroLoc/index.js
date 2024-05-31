@@ -37,11 +37,11 @@ export default function RoteirosLoc() {
 
   return (
     <div className="roteiro-page">
-      <header className="roteiro-header">
-        <h1>Crie o seu Roteiro</h1>
-      </header>
 
       <div className="roteiro-container">
+        <div className="roteiro-title"> 
+          <h1><b>Crie o seu Roteiro</b></h1>
+        </div>
         <div className="roteiro-name">
           <input type="text" placeholder="Nome do roteiro" />
           <button className="create-roteiro-button">Criar Roteiro</button>
