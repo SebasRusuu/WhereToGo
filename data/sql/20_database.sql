@@ -35,11 +35,12 @@ CREATE TABLE userWtg (
     user_id SERIAL PRIMARY KEY,
     firstName VARCHAR(30),
     lastName VARCHAR(30),
-    email VARCHAR(50),
-    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(50) UNIQUE,
+    password_hash VARCHAR(255),
     reset_token VARCHAR(255),
     reset_token_expires TIMESTAMP
 );
+
 
 CREATE TABLE Interesse (
     inter_id SERIAL PRIMARY KEY,
