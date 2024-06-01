@@ -53,6 +53,15 @@ CREATE TABLE Interesse (
     FOREIGN KEY (inter_categ_id) REFERENCES Categoria(categ_id)
 );
 
+CREATE TABLE UserRoteiro (
+    userrot_id SERIAL PRIMARY KEY,
+    userrot_user_id INT,
+    userrot_rot_id INT,
+    FOREIGN KEY (userrot_user_id) REFERENCES userWtg(user_id),
+    FOREIGN KEY (userrot_rot_id) REFERENCES Roteiro(rot_id)
+);
+
+
 
 
 -- -- Inserir dados na tabela Categoria
