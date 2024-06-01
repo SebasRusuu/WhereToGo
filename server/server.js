@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -7,13 +6,15 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const dotenv = require('dotenv');
+const fetch = require('node-fetch');
 
 dotenv.config();
 
 const app = express();
 const port = 4000;
 
-app.use(express.json());
+app.use(express.json({ limit: '10kb' })); // Ajuste o limite de tamanho do payload
+app.use(express.urlencoded({ limit: '10kb', extended: true }));
 app.use(cors());
 
 const pool = new Pool({
@@ -69,8 +70,6 @@ app.get('/users', async (req, res) => {
   }
 });
 
-// src/server.js
-
 app.post('/check-email', async (req, res) => {
   const { email } = req.body;
   try {
@@ -85,7 +84,6 @@ app.post('/check-email', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -128,7 +126,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
 app.post('/google-login', async (req, res) => {
   const { email } = req.body;
   try {
@@ -143,7 +140,6 @@ app.post('/google-login', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 app.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
@@ -180,7 +176,6 @@ app.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 app.get('/verify-reset-token', async (req, res) => {
   const { token } = req.query;
@@ -253,7 +248,6 @@ app.get('/place-details', async (req, res) => {
   }
 });
 
-
 app.get('/place-stats', async (req, res) => {
   const { city, type } = req.query; // Obtém cidade e tipo dos parâmetros de consulta
   const apiKey = process.env.GOOGLE_API_KEY;
@@ -307,10 +301,6 @@ app.get('/place-stats', async (req, res) => {
   }
 });
 
-
-
-
-
 const fetchPlaceCounts = async (type) => {
   const apiKey = process.env.GOOGLE_API_KEY;
   const cities = ["Lisboa", "Sintra", "Vila Nova de Gaia", "Porto", "Cascais"];
@@ -352,6 +342,80 @@ app.get('/place-counts', async (req, res) => {
   }
 });
 
+// Função para buscar locais da API Google Places com base nos interesses do usuário
+const fetchPlaces = async (interests) => {
+  const apiKey = process.env.GOOGLE_API_KEY;
+  const promises = interests.map(interest => {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${interest}+in+Lisboa&key=${apiKey}`;
+    return fetch(url).then(response => response.json());
+  });
+
+  const results = await Promise.all(promises);
+  const places = results.flatMap(result => result.results);
+  return places.sort(() => 0.5 - Math.random()).slice(0, 6);
+};
+
+app.post('/save-interests', async (req, res) => {
+  const { userId, region, eatDuringTrip, selectedOptions } = req.body;
+
+  try {
+    const client = await pool.connect();
+
+    // Inicia uma transação
+    await client.query('BEGIN');
+
+    // Insere um novo RoteiroInt
+    const rotintResult = await client.query(
+      'INSERT INTO "RoteiroInt" DEFAULT VALUES RETURNING rotint_id'
+    );
+    const rotintId = rotintResult.rows[0].rotint_id;
+
+    // Insere os interesses do usuário
+    for (const option of selectedOptions) {
+      await client.query(
+        'INSERT INTO "Interesse" (inter_name, inter_user_id, inter_rotint_id) VALUES ($1, $2, $3)',
+        [option, userId, rotintId]
+      );
+    }
+
+    // Insere um novo Roteiro
+    const rotResult = await client.query(
+      'INSERT INTO "Roteiro" (rot_name, rot_rotint_id) VALUES ($1, $2) RETURNING rot_id',
+      [`Roteiro de ${region}`, rotintId]
+    );
+    const rotId = rotResult.rows[0].rot_id;
+
+    // Associa o Roteiro ao usuário
+    await client.query(
+      'INSERT INTO "UserRoteiro" (userrot_user_id, userrot_rot_id) VALUES ($1, $2)',
+      [userId, rotId]
+    );
+
+    // Conclui a transação
+    await client.query('COMMIT');
+    client.release();
+
+    // Fetch places based on user interests
+    const places = await fetchPlaces(selectedOptions);
+
+    res.status(201).json({ roteiroId: rotId, places });
+  } catch (error) {
+    console.error('Erro ao salvar interesses:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/get-places', async (req, res) => {
+  const { selectedOptions } = req.body;
+
+  try {
+    const places = await fetchPlaces(selectedOptions);
+    res.status(200).json({ places });
+  } catch (error) {
+    console.error('Error fetching places:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

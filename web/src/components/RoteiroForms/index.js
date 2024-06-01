@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RoteiroForms.css';
 
-function RoteiroForms({ onClose }) {
+function RoteiroForms({ onClose, userId }) {
   const [region, setRegion] = useState('');
   const [eatDuringTrip, setEatDuringTrip] = useState('');
   const [visitOptions, setVisitOptions] = useState({
@@ -22,17 +22,35 @@ function RoteiroForms({ onClose }) {
     setVisitOptions({ ...visitOptions, [name]: checked });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const selectedOptions = Object.keys(visitOptions).filter(key => visitOptions[key]);
     const formData = {
       region,
       eatDuringTrip,
-      selectedOptions
+      selectedOptions,
+      userId
     };
 
-    // Navigate to the roteirosLoc page with form data
-    navigate('/roteiros-loc', { state: { formData } });
+    try {
+      console.log('Sending formData:', formData);
+      const response = await fetch('/save-interests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        navigate('/roteiros-loc', { state: { formData, roteiroId: data.roteiroId } });
+      } else {
+        console.error('Error saving interests');
+      }
+    } catch (error) {
+      console.error('Error saving interests:', error);
+    }
   };
 
   return (
@@ -75,6 +93,15 @@ function RoteiroForms({ onClose }) {
                 />
                 <label htmlFor="museus">Museus</label>
                 
+                <input
+                  type="checkbox"
+                  id="miradouro"
+                  name="miradouro"
+                  checked={visitOptions.miradouro}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="miradouro">Miradouro</label>
+
                 <input
                   type="checkbox"
                   id="monumentos"

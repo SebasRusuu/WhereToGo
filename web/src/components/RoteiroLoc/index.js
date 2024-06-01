@@ -7,9 +7,9 @@ export default function RoteirosLoc() {
   const location = useLocation();
   const { formData } = location.state || {};
 
-  const [position, setPosition] = useState(null);
   const [initialCenter, setInitialCenter] = useState(null);
   const [initialZoom] = useState(15);
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     const getCurrentLocation = () => {
@@ -20,7 +20,6 @@ export default function RoteirosLoc() {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
-            setPosition(currentPosition);
             setInitialCenter(currentPosition);
           },
           (error) => {
@@ -35,9 +34,35 @@ export default function RoteirosLoc() {
     getCurrentLocation();
   }, []);
 
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const response = await fetch('/get-places', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ selectedOptions: formData.selectedOptions }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setPlaces(data.places);
+        } else {
+          console.error('Error fetching places');
+        }
+      } catch (error) {
+        console.error('Error fetching places:', error);
+      }
+    };
+
+    if (formData) {
+      fetchPlaces();
+    }
+  }, [formData]);
+
   return (
     <div className="roteiro-page">
-
       <div className="roteiro-container">
         <div className="roteiro-title"> 
           <h1><b>Crie o seu Roteiro</b></h1>
@@ -51,33 +76,24 @@ export default function RoteirosLoc() {
           <div className="roteiro-section">
             <h2>O Meu Roteiro</h2>
             <ul className="roteiro-list">
-              <li>
-                <span>Local 1</span>
-                <button className="delete-button">x</button>
-              </li>
-              <li>
-                <span>Local 2</span>
-                <button className="delete-button">x</button>
-              </li>
-              <li>
-                <span>Local 3</span>
-                <button className="delete-button">🗑️</button>
-              </li>
-              <li>
-                <span>Local 4</span>
-                <button className="delete-button">🗑️</button>
-              </li>
+              {places.map((place, index) => (
+                <li key={index}>
+                  <span>{place.name}</span>
+                  <button className="delete-button">🗑️</button>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="roteiro-section">
             <h2>Mais Opções</h2>
             <ul className="roteiro-list">
-              <li><button className="add-button">+</button></li>
-              <li><button className="add-button">+</button></li>
-              <li><button className="add-button">+</button></li>
-              <li><button className="add-button">+</button></li>
-              
+              {places.map((place, index) => (
+                <li key={index}>
+                  <span>{place.name}</span>
+                  <button className="add-button">+</button>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -85,11 +101,15 @@ export default function RoteirosLoc() {
 
       <div className="roteiro-location">
         <div className="location-details">
-          <h3>Padrão dos Descobrimentos</h3>
-          <p>Endereço: Av. Brasília – Belém Belem, Lisboa 1400-038 Portugal</p>
-          <p>Valor da entrada: 0€</p>
-          <p>Local: Belém</p>
-          <p>⭐ 4.6</p>
+          {places.length > 0 && (
+            <>
+              <h3>{places[0].name}</h3>
+              <p>Endereço: {places[0].formatted_address}</p>
+              <p>Valor da entrada: {places[0].price_level ? `${places[0].price_level}€` : 'Gratuito'}</p>
+              <p>Local: {places[0].vicinity}</p>
+              <p>⭐ {places[0].rating}</p>
+            </>
+          )}
         </div>
         <div className="map-container">
           <APIProvider apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
@@ -104,7 +124,12 @@ export default function RoteirosLoc() {
                     greedy: true,
                   }}
                 >
-                  <Marker position={position} />
+                  {places.map((place, index) => (
+                    <Marker
+                      key={index}
+                      position={{ lat: place.geometry.location.lat, lng: place.geometry.location.lng }}
+                    />
+                  ))}
                 </Map>
               ) : (
                 <p>Loading...</p>
