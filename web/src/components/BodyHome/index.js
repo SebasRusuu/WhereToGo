@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import "./BodyHome.css";
 import bridgeImage from '../../imgs/imagens/ponte_azul.png';
 import Cards from '../CardsComponents';
 import useInView from '../../hooks/useInView';
 import RoteiroForms from '../RoteiroForms';
+import AuthContext from '../../context/AuthProvider';
 
 function BodyHome() {
+  const { auth } = useContext(AuthContext);
   const [isRoteiroFormOpen, setIsRoteiroFormOpen] = useState(false);
   const [cardRef, cardInView] = useInView({ threshold: 0.5 });
   const [textRef, textInView] = useInView({ threshold: 0.5 });
@@ -74,7 +76,7 @@ function BodyHome() {
       </motion.div>
       <Cards>Recomendados</Cards>
       <Cards></Cards>
-      {isRoteiroFormOpen && <RoteiroForms onClose={handleCloseForm} />}
+      {isRoteiroFormOpen && <RoteiroForms onClose={handleCloseForm} userId={auth.user?.id} />}
     </>
   );
 }

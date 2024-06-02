@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import './Register.css';
 import backIcon from '../../imgs/logos/back.png';
 import ponteLogo from '../../imgs/logos/logoponte.png';
+import axios from '../../api/axios';
 
-function Register({ isOpen, onClose }) {
+function Register({ isOpen, onClose, onLoginOpen }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,16 +19,8 @@ function Register({ isOpen, onClose }) {
 
   const checkEmailExists = async (email) => {
     try {
-      const response = await fetch('http://localhost:4000/check-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-      return data.exists;
+      const response = await axios.post('/check-email', { email });
+      return response.data.exists;
     } catch (error) {
       console.error('Erro ao verificar e-mail:', error);
       return false;
@@ -58,25 +51,19 @@ function Register({ isOpen, onClose }) {
     setErrorMessage('');
 
     try {
-      const response = await fetch("http://localhost:4000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          password
-        }),
+      const response = await axios.post('/register', {
+        firstName,
+        lastName,
+        email,
+        password
       });
   
-      if (response.ok) {
-        alert("Registration successful!");
+      if (response.status === 201) {
+        alert('Registration successful!');
         onClose();
+        onLoginOpen(); // Open the login modal after successful registration
       } else {
-        const errorData = await response.json();
-        setErrorMessage(`Registration failed: ${errorData.error}`);
+        setErrorMessage(`Registration failed: ${response.data.error}`);
       }
     } catch (error) {
       setErrorMessage(`Registration failed: ${error.message}`);
