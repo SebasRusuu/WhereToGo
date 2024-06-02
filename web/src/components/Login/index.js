@@ -1,11 +1,14 @@
 // src/components/Login.js
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../../context/AuthProvider';
 import './Login.css';
 import closeIcon from '../../imgs/logos/close.png';
 import ponteLogo from '../../imgs/logos/logoponte.png';
+import axios from '../../api/axios';
 
 function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
+  const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,24 +25,26 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post('/login', { email, password });
 
-      if (response.ok) {
+      if (response.status === 200) {
+        const { token, user } = response.data;
+        setAuth({ token, user });
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', user.id);
         alert("Login successful!");
-        onLogin();
-        onClose();  // Close the pop-up on successful login
+        onLogin();  // This should be a function passed down as a prop
+        onClose();
+        window.location.href = '/';
       } else {
-        const errorData = await response.json();
-        setErrorMessage(` ${errorData.error}`);
+        setErrorMessage(`Login failed: ${response.data.error}`);
       }
     } catch (error) {
-      setErrorMessage(` ${error.message}`);
+      if (error.response) {
+        setErrorMessage(`Login failed: ${error.response.data.error}`);
+      } else {
+        setErrorMessage(`Login failed: ${error.message}`);
+      }
     }
   };
 

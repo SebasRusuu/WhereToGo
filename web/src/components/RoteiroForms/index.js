@@ -34,7 +34,7 @@ function RoteiroForms({ onClose, userId }) {
 
     try {
       console.log('Sending formData:', formData);
-      const response = await fetch('/save-interests', {
+      const response = await fetch('http://localhost:4000/save-interests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,3 +1,5 @@
+// src/components/LoginModal.js
+
 import React, { useState, useEffect } from 'react';
 import './LoginModal.css';
 import emailLogo from '../../imgs/logos/mail.png';
@@ -82,8 +84,11 @@ function LoginModal({ isOpen, onClose, onLogin }) {
         body: JSON.stringify({ email }),
       });
       if (response.ok) {
-        console.log('Email saved successfully');
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.user.id);
         onLogin();
+        window.location.href = '/';
       } else {
         console.error('Failed to save email');
       }
@@ -124,7 +129,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
       )}
       {isLoginOpen && <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} onRegisterOpen={handleRegisterOpen} onResetEmailOpen={handleResetEmail} onLogin={onLogin} />}
       {isResetEmailOpen && <ResetEmail isOpen={isResetEmailOpen} onClose={() => setIsResetEmailOpen(false)} onOpenResetPassword={handleOpenResetPassword} />}
-      {isRegisterOpen && <Register isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />}
+      {isRegisterOpen && <Register isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} onLoginOpen={() => setIsLoginOpen(true)} />}
       {isResetPasswordOpen && <ResetPassword isOpen={isResetPasswordOpen} onClose={handleCloseResetPassword} token={token} />}
       {message && <p className="error-message">{message}</p>}
     </>

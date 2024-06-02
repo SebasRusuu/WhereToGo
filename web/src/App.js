@@ -9,8 +9,10 @@ import Reviews from './pages/Reviews';
 import Roteiro from './pages/Roteiro';
 import Contactos from './pages/Contactos';
 import LoginModal from "./components/LoginModal";
+import Login from "./components/Login";
+import Register from "./components/Register";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Admin from "./components/AdminDashboard";
+// import Admin from "./components/AdminDashboard";
 import ResetPassword from "./components/ResetPassword";
 import RoteirosLoc from "./components/RoteiroLoc";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -40,8 +42,10 @@ function App() {
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/roteiro" element={<Roteiro />} />
             <Route path="/contactos" element={<Contactos />} />
-            <Route path="/login" element={<LoginModal />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/login-modal" element={<LoginModal />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {/* <Route path="/admin" element={<Admin />} /> */}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/roteiros-loc" element={<RoteirosLoc />} />
           </Routes>

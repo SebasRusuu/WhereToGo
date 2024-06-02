@@ -22,6 +22,7 @@
     "google-auth-library": "^9.10.0",
     "googleapis": "^137.1.0",
     "inflight": "^1.0.6",
+    "jsonwebtoken": "^9.0.2",
     "lru-cache": "^10.2.2",
     "nodemailer": "^6.9.13",
     "npmlog": "^7.0.1",

@@ -1,36 +1,39 @@
-import React, { useState, useEffect } from 'react';
+// src/components/Header.js
+
+import React, { useState, useEffect, useContext } from 'react';
 import '../../App.css';
 import logoImage from '../../imgs/logos/logoponte.png';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import LoginModal from '../LoginModal';
+import AuthContext from '../../context/AuthProvider';
 
 function Header() {
+  const { auth, setAuth } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Verificar se o usuário está autenticado ao carregar o componente
-    const loggedIn = localStorage.getItem('isAuthenticated');
-    if (loggedIn) {
-      setIsAuthenticated(true);
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    if (token && userId) {
+      setAuth({ token, user: { id: userId } });
     }
-  }, []);
+  }, [setAuth]);
 
   const toggleMenu = () => {
     setIsMenuOpen(isMenuOpen => !isMenuOpen);
   };
 
   const handleLogin = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem('isAuthenticated', 'true');
     setIsLoginModalOpen(false);
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('isAuthenticated');
+    setAuth({});
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    window.location.href = '/';
   };
 
   const navMotions = {
@@ -69,7 +72,7 @@ function Header() {
           <motion.div className="nav-content" variants={navMotions} whileHover="hover">WhereToEat</motion.div>
         </Link>
         <div className="login-button-container">
-          {isAuthenticated ? (
+          {auth?.user ? (
             <motion.button className="login-button" onClick={handleLogout}>
               Logout
             </motion.button>
