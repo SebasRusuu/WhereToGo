@@ -3,3 +3,5 @@ node_modules
 db_data/
 
 .env.local
+
+.DS_Store
