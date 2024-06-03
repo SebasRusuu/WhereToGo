@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import './RoteiroForms.css';
 
 function RoteiroForms({ onClose, userId }) {
-  const [region, setRegion] = useState('');
+  const [address, setAddress] = useState('');
   const [eatDuringTrip, setEatDuringTrip] = useState('');
   const [visitOptions, setVisitOptions] = useState({
     museus: false,
     monumentos: false,
+    miradouro: false,
     praias: false,
     parques: false,
     parqueDiversao: false,
@@ -16,6 +18,21 @@ function RoteiroForms({ onClose, userId }) {
   });
 
   const navigate = useNavigate();
+
+  const handleChange = (address) => {
+    setAddress(address);
+  };
+
+  const handleSelect = async (address) => {
+    setAddress(address);
+    try {
+      const results = await geocodeByAddress(address);
+      const latLng = await getLatLng(results[0]);
+      console.log('Success', latLng);
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
@@ -26,7 +43,7 @@ function RoteiroForms({ onClose, userId }) {
     event.preventDefault();
     const selectedOptions = Object.keys(visitOptions).filter(key => visitOptions[key]);
     const formData = {
-      region,
+      region: address,
       eatDuringTrip,
       selectedOptions,
       userId
@@ -34,6 +51,10 @@ function RoteiroForms({ onClose, userId }) {
 
     console.log('Sending formData:', formData);
     navigate('/roteiros-loc', { state: { formData } });
+  };
+
+  const searchOptions = {
+    componentRestrictions: { country: 'pt' }
   };
 
   return (
@@ -46,12 +67,45 @@ function RoteiroForms({ onClose, userId }) {
           
           <div className="question-container">
             <label>Qual a região do país que pretende conhecer?</label>
-            <select value={region} onChange={(e) => setRegion(e.target.value)}>
-              <option value="">Selecione uma região</option>
-              <option value="norte">Norte</option>
-              <option value="centro">Centro</option>
-              <option value="sul">Sul</option>
-            </select>
+            <PlacesAutocomplete
+              value={address}
+              onChange={handleChange}
+              onSelect={handleSelect}
+              searchOptions={searchOptions}
+            >
+              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                <div>
+                  <input
+                    {...getInputProps({
+                      placeholder: 'Search Places ...',
+                      className: 'location-search-input',
+                    })}
+                  />
+                  <div className="autocomplete-dropdown-container">
+                    {loading && <div>Loading...</div>}
+                    {suggestions.map((suggestion, index) => {
+                      const className = suggestion.active
+                        ? 'suggestion-item--active'
+                        : 'suggestion-item';
+                      const style = suggestion.active
+                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                      return (
+                        <div
+                          key={index}
+                          {...getSuggestionItemProps(suggestion, {
+                            className,
+                            style,
+                          })}
+                        >
+                          <span>{suggestion.description}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </PlacesAutocomplete>
           </div>
           
           <div className="question-container">
