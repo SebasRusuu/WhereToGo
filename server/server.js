@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/authenticateToken');
+const axios = require('axios');
 
 dotenv.config();
 
@@ -57,6 +58,18 @@ async function sendResetEmail(email, resetLink) {
 
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' });
+}
+
+async function fetchPlaces(selectedOptions) {
+  const apiKey = process.env.GOOGLE_API_KEY;
+  const promises = selectedOptions.map(async (option) => {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${option}&key=${apiKey}`;
+    const response = await axios.get(url);
+    return response.data.results;
+  });
+
+  const placesArrays = await Promise.all(promises);
+  return placesArrays.flat();
 }
 
 app.use(express.static(path.join(__dirname, '../web/build')));
@@ -262,9 +275,7 @@ app.post('/save-interests', authenticateToken, async (req, res) => {
     await client.query('COMMIT');
     client.release();
 
-    const places = await fetchPlaces(selectedOptions);
-
-    res.status(201).json({ roteiroId: rotId, places });
+    res.status(201).json({ roteiroId: rotId });
   } catch (error) {
     console.error('Erro ao salvar interesses:', error);
     res.status(500).json({ error: error.message });
@@ -291,6 +302,8 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+
 
 // app.get('/place-details', async (req, res) => {
 //   const { place_id } = req.query;

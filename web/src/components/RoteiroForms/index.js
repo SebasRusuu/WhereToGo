@@ -32,25 +32,8 @@ function RoteiroForms({ onClose, userId }) {
       userId
     };
 
-    try {
-      console.log('Sending formData:', formData);
-      const response = await fetch('http://localhost:4000/save-interests', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        navigate('/roteiros-loc', { state: { formData, roteiroId: data.roteiroId } });
-      } else {
-        console.error('Error saving interests');
-      }
-    } catch (error) {
-      console.error('Error saving interests:', error);
-    }
+    console.log('Sending formData:', formData);
+    navigate('/roteiros-loc', { state: { formData } });
   };
 
   return (

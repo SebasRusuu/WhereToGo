@@ -6,21 +6,31 @@ import Cards from '../CardsComponents';
 import useInView from '../../hooks/useInView';
 import RoteiroForms from '../RoteiroForms';
 import AuthContext from '../../context/AuthProvider';
+import LoginModal from '../LoginModal'; // Certifique-se de importar o LoginModal
 
 function BodyHome() {
   const { auth } = useContext(AuthContext);
   const [isRoteiroFormOpen, setIsRoteiroFormOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [cardRef, cardInView] = useInView({ threshold: 0.5 });
   const [textRef, textInView] = useInView({ threshold: 0.5 });
   const [imageRef, imageInView] = useInView({ threshold: 0.5 });
   const [recommendedRef, recommendedInView] = useInView({ threshold: 0.5 });
 
   const handleOpenForm = () => {
-    setIsRoteiroFormOpen(true);
+    if (auth?.user) {
+      setIsRoteiroFormOpen(true);
+    } else {
+      setIsLoginModalOpen(true);
+    }
   };
 
   const handleCloseForm = () => {
     setIsRoteiroFormOpen(false);
+  };
+
+  const handleLogin = () => {
+    setIsLoginModalOpen(false);
   };
 
   const textContainerVariants = {
@@ -77,6 +87,7 @@ function BodyHome() {
       <Cards>Recomendados</Cards>
       <Cards></Cards>
       {isRoteiroFormOpen && <RoteiroForms onClose={handleCloseForm} userId={auth.user?.id} />}
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onLogin={handleLogin} />
     </>
   );
 }

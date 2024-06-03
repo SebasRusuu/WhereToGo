@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './roteirosLoc.css';
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import axios from 'axios';
 
 export default function RoteirosLoc() {
   const location = useLocation();
@@ -37,20 +38,8 @@ export default function RoteirosLoc() {
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const response = await fetch('/get-places', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ selectedOptions: formData.selectedOptions }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setPlaces(data.places);
-        } else {
-          console.error('Error fetching places');
-        }
+        const response = await axios.post('http://localhost:4000/get-places', { selectedOptions: formData.selectedOptions });
+        setPlaces(response.data.places);
       } catch (error) {
         console.error('Error fetching places:', error);
       }
