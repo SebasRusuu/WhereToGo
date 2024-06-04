@@ -1,9 +1,6 @@
 .roteiro-page {
-  
   font-family: Arial, sans-serif;
   padding: 20px;
-  
-
 }
 
 .roteiro-header {
@@ -11,17 +8,11 @@
   margin-bottom: 20px;
 }
 
-.logo {
-  width: 50px;
-  height: auto;
-}
-
 .roteiro-name {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
-  
 }
 
 .roteiro-name input {
@@ -29,13 +20,13 @@
   padding: 10px 20px;
   border-radius: 20px;
   margin-right: 15px;
-  background-color: #EADDCA; 
-  color: #8b4513; 
-  font-size: 16px; 
+  background-color: #EADDCA;
+  color: #8b4513;
+  font-size: 16px;
   border: none;
   align-items: center;
   height: 50px;
-  display: inline-block; 
+  display: inline-block;
 }
 
 .create-roteiro-button {
@@ -43,15 +34,14 @@
   padding: 10px 20px;
   border-radius: 20px;
   margin-right: 15px;
-  background: linear-gradient(90deg, #0047ab, #000080); 
-  color: white; 
-  font-size: 16px; 
+  background: linear-gradient(90deg, #0047ab, #000080);
+  color: white;
+  font-size: 16px;
   border: none;
   align-items: center;
   height: 50px;
   display: inline-block;
-  padding-left: 20px; 
-
+  padding-left: 20px;
 }
 
 .roteiro-title {
@@ -62,13 +52,10 @@
 .roteiro-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  
-  
+  align-items: flex-start;
+  height: calc(100vh - 200px);
 }
 
-
- 
 .roteiro-container {
   width: 90%;
   align-items: center;
@@ -78,39 +65,43 @@
   margin: 0 auto;
   max-width: 950px;
 }
+
 .roteiro-section {
-  width: 100%;
-  margin-bottom: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Allow scrolling for this section */
+}
+
+.roteiro-section:first-child {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
 }
 
 .roteiro-section h2 {
   margin-bottom: 10px;
-  width: 100%;
   text-align: center;
   font-family: Inter, sans-serif;
   white-space: nowrap;
-  
 }
 
 .roteiro-list {
   list-style: none;
   padding: 0;
-  width: 100%;
+  margin: 0;
 }
 
 .roteiro-list li {
   display: flex;
-  justify-content: space-between; /* Alterar para justificar conteúdo */
+  justify-content: space-between;
   align-items: center;
   background-color: #EADDCA;
-  padding: 35px; /* Aumentar o padding para maior altura */
+  padding: 15px;
   border-radius: 15px;
   margin-bottom: 10px;
-  width: 400px; /* Aumentar a largura dos itens de lista */
-  margin-left: auto; /* Centralizar os itens de lista */
-  margin-right: auto; /* Centralizar os itens de lista */
+  width: 100%;
 }
 
 .add-button {
@@ -148,5 +139,4 @@
   cursor: pointer;
   font-size: 20px;
   color: var(--blue);
-  
 }

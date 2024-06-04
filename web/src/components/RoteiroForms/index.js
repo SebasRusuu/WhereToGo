@@ -5,6 +5,7 @@ import './RoteiroForms.css';
 
 function RoteiroForms({ onClose, userId }) {
   const [address, setAddress] = useState('');
+  const [latLng, setLatLng] = useState({ lat: null, lng: null });
   const [eatDuringTrip, setEatDuringTrip] = useState('');
   const [visitOptions, setVisitOptions] = useState({
     museus: false,
@@ -28,6 +29,7 @@ function RoteiroForms({ onClose, userId }) {
     try {
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
+      setLatLng(latLng);
       console.log('Success', latLng);
     } catch (error) {
       console.error('Error', error);
@@ -46,7 +48,9 @@ function RoteiroForms({ onClose, userId }) {
       region: address,
       eatDuringTrip,
       selectedOptions,
-      userId
+      userId,
+      lat: latLng.lat,
+      lng: latLng.lng,
     };
 
     console.log('Sending formData:', formData);

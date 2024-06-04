@@ -60,10 +60,12 @@ function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' });
 }
 
-async function fetchPlaces(selectedOptions) {
+async function fetchPlaces(selectedOptions, lat, lng) {
   const apiKey = process.env.GOOGLE_API_KEY;
+  const radius = 50000; // 50 km radius
+
   const promises = selectedOptions.map(async (option) => {
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${option}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${option}&location=${lat},${lng}&radius=${radius}&key=${apiKey}`;
     const response = await axios.get(url);
     return response.data.results;
   });
@@ -71,6 +73,9 @@ async function fetchPlaces(selectedOptions) {
   const placesArrays = await Promise.all(promises);
   return placesArrays.flat();
 }
+
+
+
 
 app.use(express.static(path.join(__dirname, '../web/build')));
 
@@ -283,16 +288,21 @@ app.post('/save-interests', authenticateToken, async (req, res) => {
 });
 
 app.post('/get-places', async (req, res) => {
-  const { selectedOptions } = req.body;
+  const { selectedOptions, lat, lng } = req.body;
+
+  if (!lat || !lng) {
+    return res.status(400).json({ error: 'Latitude and longitude are required' });
+  }
 
   try {
-    const places = await fetchPlaces(selectedOptions);
+    const places = await fetchPlaces(selectedOptions, lat, lng);
     res.status(200).json({ places });
   } catch (error) {
     console.error('Error fetching places:', error);
     res.status(500).json({ error: error.message });
   }
 });
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
