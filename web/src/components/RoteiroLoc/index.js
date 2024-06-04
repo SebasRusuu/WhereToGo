@@ -87,23 +87,25 @@ export default function RoteirosLoc() {
       </div>
 
       <div className="roteiro-location">
-        <div className="location-details">
-          {selectedPlace ? (
-            <>
-              <img src={selectedPlace.photos[0]} alt={`Foto de ${selectedPlace.name}`} className="place-photo-large" />
-              <div className="details-text">
-                <h3>{selectedPlace.name}</h3>
-                <p>Endereço: {selectedPlace.formatted_address}</p>
-                <p>Valor da entrada: {selectedPlace.price_level ? `${selectedPlace.price_level}€` : 'Gratuito'}</p>
-                <p>Local: {selectedPlace.vicinity}</p>
-                <div className="rating">
-                  <span>{selectedPlace.rating}</span>
+        <div className="d-flex justify-content-center"> {/* Bootstrap utility classes for centering */}
+          <div className="location-details">
+            {selectedPlace ? (
+              <>
+                <img src={selectedPlace.photos[0]} alt={`Foto de ${selectedPlace.name}`} className="place-photo-large" />
+                <div className="details-text">
+                  <h3>{selectedPlace.name}</h3>
+                  <p>Endereço: {selectedPlace.formatted_address}</p>
+                  <p>Valor da entrada: {selectedPlace.price_level ? `${selectedPlace.price_level}€` : 'Gratuito'}</p>
+                  <p>Local: {selectedPlace.vicinity}</p>
+                  <div className="rating">
+                    <span>{selectedPlace.rating}</span>
+                  </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            <p>Selecione um local para ver os detalhes</p>
-          )}
+              </>
+            ) : (
+              <p>Selecione um local para ver os detalhes</p>
+            )}
+          </div>
         </div>
         <div className="map-container">
           <APIProvider apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>

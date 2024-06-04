@@ -1,3 +1,4 @@
+// backend
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -6,10 +7,9 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const dotenv = require('dotenv');
-const fetch = require('node-fetch');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/authenticateToken');
-const axios = require('axios');
 
 dotenv.config();
 
@@ -65,33 +65,41 @@ async function fetchPlaces(selectedOptions, lat, lng) {
   const radius = 20000; // 20 km radius
 
   const promises = selectedOptions.map(async (option) => {
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${option}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${option}&location=${lat},${lng}&radius=${radius}&key=${apiKey}`;
+    console.log(`Fetching URL: ${url}`);
     const response = await axios.get(url);
+    console.log(`Response for ${option}:`, response.data);
     return response.data.results;
   });
 
   const placesArrays = await Promise.all(promises);
   const allPlaces = placesArrays.flat();
+  console.log('All places fetched:', allPlaces);
+
   const sortedPlaces = allPlaces.sort((a, b) => b.rating - a.rating);
   const topRatedPlaces = sortedPlaces.slice(0, 6);
   const remainingPlaces = sortedPlaces.slice(6);
 
   const formatPlace = (place) => ({
     name: place.name,
-    formatted_address: place.vicinity,
+    formatted_address: place.formatted_address,
     price_level: place.price_level,
     rating: place.rating,
     geometry: place.geometry,
     photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || []
   });
 
+  const formattedTopRatedPlaces = topRatedPlaces.map(formatPlace);
+  const formattedRemainingPlaces = remainingPlaces.map(formatPlace);
+
+  console.log('Formatted top rated places:', formattedTopRatedPlaces);
+  console.log('Formatted remaining places:', formattedRemainingPlaces);
+
   return {
-    topRatedPlaces: topRatedPlaces.map(formatPlace),
-    remainingPlaces: remainingPlaces.map(formatPlace)
+    topRatedPlaces: formattedTopRatedPlaces,
+    remainingPlaces: formattedRemainingPlaces
   };
 }
-
-
 
 
 app.use(express.static(path.join(__dirname, '../web/build')));
@@ -153,7 +161,6 @@ app.post('/login', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM "userwtg" WHERE email = $1', [email]);
     const user = result.rows[0];
-
     if (user && await bcrypt.compare(password, user.password_hash)) {
       console.log('User logged in successfully:', user);
       const accessToken = generateAccessToken({ userId: user.user_id, email: user.email });
@@ -307,6 +314,14 @@ app.post('/save-interests', authenticateToken, async (req, res) => {
 app.post('/get-places', async (req, res) => {
   const { selectedOptions, lat, lng } = req.body;
 
+  console.log('Received selectedOptions:', selectedOptions);
+  console.log('Received lat:', lat);
+  console.log('Received lng:', lng);
+
+  if (!lat || !lng) {
+    return res.status(400).json({ error: 'Latitude and longitude are required' });
+  }
+
   try {
     const { topRatedPlaces, remainingPlaces } = await fetchPlaces(selectedOptions, lat, lng);
     res.status(200).json({ topRatedPlaces, remainingPlaces });
@@ -317,6 +332,7 @@ app.post('/get-places', async (req, res) => {
 });
 
 
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
@@ -325,124 +341,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-
-
-// app.get('/place-details', async (req, res) => {
-//   const { place_id } = req.query;
-//   const apiKey = process.env.GOOGLE_API_KEY;
-
-//   if (!place_id) {
-//     return res.status(400).json({ error: 'place_id is required' });
-//   }
-
-//   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,rating,price_level,user_ratings_total,geometry.location&key=${apiKey}`;
-
-//   try {
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     if (data.status === 'OK') {
-//       res.json(data.result);
-//     } else {
-//       console.error('Error fetching place details:', data);
-//       res.status(500).json({ error: data.status, message: data.error_message });
-//     }
-//   } catch (error) {
-//     console.error('Error fetching place details:', error);
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
-// app.get('/place-stats', async (req, res) => {
-//   const { city, type } = req.query; // Obtém cidade e tipo dos parâmetros de consulta
-//   const apiKey = process.env.GOOGLE_API_KEY;
-
-//   // Verifica se os parâmetros city e type foram fornecidos
-//   if (!city || !type) {
-//     return res.status(400).json({ error: 'city and type are required' });
-//   }
-
-//   // URL da API do Google Places para buscar lugares por cidade e tipo
-//   const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
-
-//   try {
-//     const response = await fetch(url); // Faz a requisição para a API do Google Places
-//     const data = await response.json(); // Converte a resposta em JSON
-//     if (data.status !== 'OK') {
-//       console.error('Error from Google Places API:', data);
-//       return res.status(500).json({ error: data.status, message: data.error_message });
-//     }
-
-//     // Filtra os lugares para considerar apenas aqueles com mais de 100 avaliações
-//     const places = data.results.filter(place => place.user_ratings_total > 100);
-//     // Extrai as avaliações (ratings) dos lugares filtrados
-//     const ratings = places.map(place => place.rating).filter(rating => rating !== undefined);
-
-//     // Verifica se há avaliações suficientes para calcular as estatísticas
-//     if (ratings.length === 0) {
-//       return res.status(404).json({ error: 'No ratings found for the specified city and type with more than 100 reviews' });
-//     }
-
-//     // Calcula o total de avaliações
-//     const totalRatings = ratings.reduce((sum, rating) => sum + rating, 0);
-//     // Calcula a média das avaliações
-//     const averageRating = totalRatings / ratings.length;
-//     const marginOfError = 0.5; // Margem de erro fixa
-//     const minRating = Math.min(...ratings); // Obtém a menor avaliação
-//     const maxRating = Math.max(...ratings); // Obtém a maior avaliação
-
-//     // Cria um objeto com as estatísticas
-//     const stats = {
-//       averageRating: averageRating.toFixed(2), // Formata a média para 2 casas decimais
-//       marginOfError: marginOfError.toFixed(2), // Formata a margem de erro para 2 casas decimais
-//       minRating, // Pior avaliação
-//       maxRating // Melhor avaliação
-//     };
-
-//     res.json(stats); // Retorna as estatísticas como resposta
-//   } catch (error) {
-//     console.error('Error fetching place stats:', error);
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
-// const fetchPlaceCounts = async (type) => {
-//   const apiKey = process.env.GOOGLE_API_KEY;
-//   const cities = ["Lisboa", "Sintra", "Vila Nova de Gaia", "Porto", "Cascais"];
-//   const results = {};
-
-//   for (const city of cities) {
-//     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
-//     try {
-//       const response = await fetch(url);
-//       const data = await response.json();
-//       if (data.status === 'OK') {
-//         results[city] = data.results.length;
-//       } else {
-//         console.error(`Error from Google Places API for ${city}:`, data);
-//         results[city] = 0;
-//       }
-//     } catch (error) {
-//       console.error(`Error fetching places for ${city}:`, error);
-//       results[city] = 0;
-//     }
-//   }
-
-//   return results;
-// };
-
-// // Nova rota para obter a quantidade de locais por cidade
-// app.get('/place-counts', async (req, res) => {
-//   const { type } = req.query;
-//   if (!type) {
-//     return res.status(400).json({ error: 'type is required' });
-//   }
-
-//   try {
-//     const counts = await fetchPlaceCounts(type);
-//     res.json(counts);
-//   } catch (error) {
-//     console.error('Error fetching place counts:', error);
-//     res.status(500).json({ error: error.message });
-//   }
-// });
