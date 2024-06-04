@@ -1,3 +1,7 @@
+:root {
+  --bege: #EADDCA; /* Use this variable for the beige color */
+}
+
 .roteiro-page {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -102,6 +106,11 @@
   border-radius: 15px;
   margin-bottom: 10px;
   width: 100%;
+  cursor: pointer;
+}
+
+.roteiro-list li:hover {
+  background-color: #D3C3A3;
 }
 
 .add-button {
@@ -115,10 +124,56 @@
 
 .roteiro-location {
   margin-top: 20px;
+  align-items: center;
 }
 
 .location-details {
   margin-bottom: 20px;
+  background-color: var(--bege); /* Background color */
+  padding: 20px; /* Padding for spacing */
+  border-radius: 20px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  display: flex;
+  align-items: center;
+  max-width: 950px; /* Match the maximum width of the above layout */
+}
+
+.location-details .place-photo-large {
+  border-radius: 20px; /* Rounded corners for images */
+  width: 300px;
+  height: 250px;
+  margin-right: 20px; /* Spacing between image and text */
+}
+
+.location-details .details-text {
+  flex: 1;
+}
+
+.location-details .details-text h3 {
+  font-size: 24px;
+  color: #000080; /* Dark blue color for the title */
+}
+
+.location-details .details-text p {
+  font-size: 18px;
+  color: #333; /* Dark gray for text */
+  margin: 10px 0; /* Spacing between paragraphs */
+}
+
+.location-details .rating {
+  display: flex;
+  align-items: center;
+}
+
+.location-details .rating img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.location-details .rating span {
+  font-size: 18px;
+  color: #333;
 }
 
 .map-container {
@@ -126,6 +181,7 @@
   height: 300px;
   border-radius: 20px;
   overflow: hidden;
+  margin-top: 20px; /* Spacing above the map */
 }
 
 .map-wrapper {
@@ -139,4 +195,18 @@
   cursor: pointer;
   font-size: 20px;
   color: var(--blue);
+}
+
+.location-details .photos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.location-details .place-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
 }

@@ -28,14 +28,14 @@ export default function RoteirosLoc() {
           lat: formData.lat,
           lng: formData.lng
         });
-        setTopRatedPlaces(response.data.places.slice(0, 6) || []);
-        setRemainingPlaces(response.data.places.slice(6) || []);
+        setTopRatedPlaces(response.data.topRatedPlaces || []);
+        setRemainingPlaces(response.data.remainingPlaces || []);
       } catch (error) {
         console.error('Error fetching places:', error);
       }
     };
 
-    if (formData && formData.lat && formData.lng) {
+    if (formData) {
       fetchPlaces();
     }
   }, [formData]);
@@ -90,11 +90,16 @@ export default function RoteirosLoc() {
         <div className="location-details">
           {selectedPlace ? (
             <>
-              <h3>{selectedPlace.name}</h3>
-              <p>Endereço: {selectedPlace.formatted_address}</p>
-              <p>Valor da entrada: {selectedPlace.price_level ? `${selectedPlace.price_level}€` : 'Gratuito'}</p>
-              <p>Local: {selectedPlace.vicinity}</p>
-              <p>⭐ {selectedPlace.rating}</p>
+              <img src={selectedPlace.photos[0]} alt={`Foto de ${selectedPlace.name}`} className="place-photo-large" />
+              <div className="details-text">
+                <h3>{selectedPlace.name}</h3>
+                <p>Endereço: {selectedPlace.formatted_address}</p>
+                <p>Valor da entrada: {selectedPlace.price_level ? `${selectedPlace.price_level}€` : 'Gratuito'}</p>
+                <p>Local: {selectedPlace.vicinity}</p>
+                <div className="rating">
+                  <span>{selectedPlace.rating}</span>
+                </div>
+              </div>
             </>
           ) : (
             <p>Selecione um local para ver os detalhes</p>
@@ -132,4 +137,3 @@ export default function RoteirosLoc() {
     </div>
   );
 }
-

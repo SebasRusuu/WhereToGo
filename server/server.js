@@ -62,16 +62,33 @@ function generateAccessToken(user) {
 
 async function fetchPlaces(selectedOptions, lat, lng) {
   const apiKey = process.env.GOOGLE_API_KEY;
-  const radius = 50000; // 50 km radius
+  const radius = 20000; // 20 km radius
 
   const promises = selectedOptions.map(async (option) => {
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${option}&location=${lat},${lng}&radius=${radius}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${option}&key=${apiKey}`;
     const response = await axios.get(url);
     return response.data.results;
   });
 
   const placesArrays = await Promise.all(promises);
-  return placesArrays.flat();
+  const allPlaces = placesArrays.flat();
+  const sortedPlaces = allPlaces.sort((a, b) => b.rating - a.rating);
+  const topRatedPlaces = sortedPlaces.slice(0, 6);
+  const remainingPlaces = sortedPlaces.slice(6);
+
+  const formatPlace = (place) => ({
+    name: place.name,
+    formatted_address: place.vicinity,
+    price_level: place.price_level,
+    rating: place.rating,
+    geometry: place.geometry,
+    photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || []
+  });
+
+  return {
+    topRatedPlaces: topRatedPlaces.map(formatPlace),
+    remainingPlaces: remainingPlaces.map(formatPlace)
+  };
 }
 
 
@@ -290,13 +307,9 @@ app.post('/save-interests', authenticateToken, async (req, res) => {
 app.post('/get-places', async (req, res) => {
   const { selectedOptions, lat, lng } = req.body;
 
-  if (!lat || !lng) {
-    return res.status(400).json({ error: 'Latitude and longitude are required' });
-  }
-
   try {
-    const places = await fetchPlaces(selectedOptions, lat, lng);
-    res.status(200).json({ places });
+    const { topRatedPlaces, remainingPlaces } = await fetchPlaces(selectedOptions, lat, lng);
+    res.status(200).json({ topRatedPlaces, remainingPlaces });
   } catch (error) {
     console.error('Error fetching places:', error);
     res.status(500).json({ error: error.message });
