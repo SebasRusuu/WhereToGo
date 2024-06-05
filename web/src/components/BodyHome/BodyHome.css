@@ -93,6 +93,13 @@ body {
   font-weight: bold;
 }
 
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
 @media (max-width: 768px) {
   .feature-card {
     flex-direction: column;
@@ -146,17 +153,3 @@ body {
   }
 }
 
-@media (min-width: 769px) and (max-width: 1200px) {
-  .feature-card {
-    max-width: 700px;
-  }
-
-  .logo-txt {
-    font-size: 35px;
-  }
-
-  .new-roteiro {
-    padding: 8px 20px;
-    font-size: 15px;
-  }
-}

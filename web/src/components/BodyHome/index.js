@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import "./BodyHome.css";
 import bridgeImage from '../../imgs/imagens/ponte_azul.png';
@@ -6,7 +6,8 @@ import Cards from '../CardsComponents';
 import useInView from '../../hooks/useInView';
 import RoteiroForms from '../RoteiroForms';
 import AuthContext from '../../context/AuthProvider';
-import LoginModal from '../LoginModal'; // Certifique-se de importar o LoginModal
+import LoginModal from '../LoginModal';
+import axios from 'axios';
 
 function BodyHome() {
   const { auth } = useContext(AuthContext);
@@ -16,6 +17,20 @@ function BodyHome() {
   const [textRef, textInView] = useInView({ threshold: 0.5 });
   const [imageRef, imageInView] = useInView({ threshold: 0.5 });
   const [recommendedRef, recommendedInView] = useInView({ threshold: 0.5 });
+  const [topVisitedPlaces, setTopVisitedPlaces] = useState([]);
+
+  useEffect(() => {
+    const fetchTopVisitedPlaces = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/top-visited-places');
+        setTopVisitedPlaces(response.data.places.slice(0, 9)); // Limita a 9 lugares
+      } catch (error) {
+        console.error('Error fetching top visited places:', error);
+      }
+    };
+
+    fetchTopVisitedPlaces();
+  }, []);
 
   const handleOpenForm = () => {
     if (auth?.user) {
@@ -51,21 +66,21 @@ function BodyHome() {
     }
   };
 
-  const recommendedVariants = {
-    hidden: { x: '-30vw', opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 1, delay: 0.4, type: 'spring', stiffness: 100 }
-    }
-  };
-
   const cardVariants = {
     hidden: { scale: 0, opacity: 0 },
     visible: {
       scale: 1,
       opacity: 1,
       transition: { duration: 1, delay: 0.2, type: 'spring', stiffness: 100 }
+    }
+  };
+
+  const recommendedVariants = {
+    hidden: { x: '-30vw', opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 1, delay: 0.4, type: 'spring', stiffness: 100 }
     }
   };
 
@@ -84,8 +99,13 @@ function BodyHome() {
       <motion.div className="recommended-container" ref={recommendedRef} variants={recommendedVariants} initial="hidden" animate={recommendedInView ? "visible" : "hidden"}>
         <h2 className='title-recommended'>Os locais mais visitados, pelos os nossos exploradores</h2>
       </motion.div>
-      <Cards>Recomendados</Cards>
-      <Cards></Cards>
+      <div className="container">
+        <div className="row">
+          {topVisitedPlaces.map((place, index) => (
+            <Cards key={index} place={place} />
+          ))}
+        </div>
+      </div>
       {isRoteiroFormOpen && <RoteiroForms onClose={handleCloseForm} userId={auth.user?.id} />}
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onLogin={handleLogin} />
     </>

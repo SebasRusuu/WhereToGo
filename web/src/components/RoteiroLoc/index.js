@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import './roteirosLoc.css';
-import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import './roteirosLoc.css';
 
 export default function RoteirosLoc() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { formData } = location.state || {};
 
   const [initialCenter, setInitialCenter] = useState(null);
@@ -13,6 +14,7 @@ export default function RoteirosLoc() {
   const [topRatedPlaces, setTopRatedPlaces] = useState([]);
   const [remainingPlaces, setRemainingPlaces] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [roteiroName, setRoteiroName] = useState('');
 
   useEffect(() => {
     if (formData && formData.lat && formData.lng) {
@@ -48,15 +50,38 @@ export default function RoteirosLoc() {
     });
   };
 
+  const handleSaveRoteiro = async () => {
+    try {
+      const response = await axios.post('http://localhost:4000/save-roteiro', {
+        rotName: roteiroName,
+        selectedOptions: topRatedPlaces,
+        lat: formData.lat,
+        lng: formData.lng
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+
+      console.log('Roteiro saved:', response.data);
+      navigate('/roteprincipal');
+    } catch (error) {
+      console.error('Error saving roteiro:', error);
+    }
+  };
+
   return (
     <div className="roteiro-page">
       <div className="roteiro-container">
-        <div className="roteiro-title"> 
-        <h1><b>Crie o seu Roteiro</b></h1>
+        <div className="roteiro-title">
+          <h1><b>Crie o seu Roteiro</b></h1>
         </div>
         <div className="roteiro-name">
-          <input type="text" placeholder="Nome do roteiro" />
-          <button className="create-roteiro-button">Criar Roteiro</button>
+          <input
+            type="text"
+            placeholder="Nome do roteiro"
+            value={roteiroName}
+            onChange={(e) => setRoteiroName(e.target.value)}
+          />
+          <button className="create-roteiro-button" onClick={handleSaveRoteiro}>Criar Roteiro</button>
         </div>
 
         <div className="roteiro-content">
@@ -87,7 +112,7 @@ export default function RoteirosLoc() {
       </div>
 
       <div className="roteiro-location">
-        <div className="d-flex justify-content-center"> {/* Bootstrap utility classes for centering */}
+        <div className="d-flex justify-content-center">
           <div className="location-details">
             {selectedPlace ? (
               <>

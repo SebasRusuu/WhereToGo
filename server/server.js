@@ -1,4 +1,3 @@
-// backend
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -101,6 +100,89 @@ async function fetchPlaces(selectedOptions, lat, lng) {
   };
 }
 
+//top-visited-places end point
+app.get('/top-visited-places', async (req, res) => {
+  try {
+    const apiKey = process.env.GOOGLE_API_KEY;
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=top+tourist+attractions+in+Portugal&key=${apiKey}`;
+    
+    const response = await axios.get(url);
+    const places = response.data.results.slice(0, 9); // Limita a 9 lugares
+
+    const formattedPlaces = places.map(place => ({
+      name: place.name,
+      formatted_address: place.formatted_address,
+      rating: place.rating,
+      photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || []
+    }));
+
+    res.status(200).json({ places: formattedPlaces });
+  } catch (error) {
+    console.error('Error fetching top visited places:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint to save roteiro
+app.post('/save-roteiro', authenticateToken, async (req, res) => {
+  const { rotName, selectedOptions, lat, lng } = req.body;
+  const userId = req.user.userId;
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Insert new roteiro
+    const rotResult = await client.query(
+      'INSERT INTO "roteiro" (rot_name, rot_user_id) VALUES ($1, $2) RETURNING rot_id',
+      [rotName, userId]
+    );
+    const rotId = rotResult.rows[0].rot_id;
+
+    // Insert locations and associate with the roteiro
+    for (const option of selectedOptions) {
+      const localResult = await client.query(
+        'INSERT INTO "local" (loc_name, loc_coo) VALUES ($1, ST_GeogFromText($2)) RETURNING loc_id',
+        [option.name, `POINT(${option.geometry.location.lng} ${option.geometry.location.lat})`]
+      );
+      const locId = localResult.rows[0].loc_id;
+
+      await client.query(
+        'INSERT INTO "roteiroloc" (rotloc_rate, rotloc_rot_id, rotloc_loc_id) VALUES ($1, $2, $3)',
+        [option.rating, rotId, locId]
+      );
+    }
+
+    await client.query('COMMIT');
+    client.release();
+
+    res.status(201).json({ roteiroId: rotId });
+  } catch (error) {
+    console.error('Erro ao salvar roteiro:', error);
+    await client.query('ROLLBACK');
+    client.release();
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint to get saved roteiros
+app.get('/roteiros', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT r.rot_id, r.rot_name, array_agg(l.loc_name) AS loc_names
+      FROM "roteiro" r
+      JOIN "roteiroloc" rl ON r.rot_id = rl.rotloc_rot_id
+      JOIN "local" l ON rl.rotloc_loc_id = l.loc_id
+      WHERE r.rot_user_id = $1
+      GROUP BY r.rot_id
+    `, [req.user.userId]);
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar roteiros:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.use(express.static(path.join(__dirname, '../web/build')));
 
@@ -296,8 +378,8 @@ app.post('/save-interests', authenticateToken, async (req, res) => {
     }
 
     const rotResult = await client.query(
-      'INSERT INTO "Roteiro" (rot_name, rot_rotint_id, rot_user_id) VALUES ($1, $2, $3) RETURNING rot_id',
-      [`Roteiro de ${region}`, rotintId, userId]
+      'INSERT INTO "roteiro" (rot_name, rot_rotint_id, rot_user_id) VALUES ($1, $2, $3) RETURNING rot_id',
+      [`roteiro de ${region}`, rotintId, userId]
     );
     const rotId = rotResult.rows[0].rot_id;
 
@@ -330,8 +412,6 @@ app.post('/get-places', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
