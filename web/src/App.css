@@ -9,7 +9,11 @@ html,body{
   --blue: #001FA8;
   --bege: #FEF1CC;
   
-}*
+}
+* {
+  box-sizing: border-box;
+}
+
 
 
 
@@ -87,8 +91,9 @@ html,body{
 
 
 .login-button:hover {
-  background-color: #FEF1CC;
+  background-color: #EADDCA;
   transition: 0.6s;
+  color: #001FA8;
 }
 
 a{
@@ -110,6 +115,8 @@ a{
   height: 2px;
   width: 25px;
 }
+
+
 
 
 
@@ -206,16 +213,16 @@ footer {
     .navigation {
       display: none; /* Esconde o menu de navegação por padrão */
       flex-direction: column; /* Orientação vertical dos links */
-      align-items: flex-start; /* Alinha os links à esquerda */
-      padding: 20px; /* Espaço ao redor dos links */
+      align-items: center; /* Alinha os links à esquerda */
+      padding: 10px;; /* Espaço ao redor dos links */
       position: absolute; /* Posicionamento absoluto */
-      top: 120px; /* Posição a partir do topo do header */
+      top: 100px; /* Posição a partir do topo do header */
       right:0; /* Posição a partir da esquerda da página */
-      background-color: white; /* Cor de fundo do menu expandido */
-      width: 50%; /* Largura do menu expandido */
-      height: 50%; /* Altura do menu expandido */
+      background-color: var(--bege); /* Cor de fundo do menu expandido */
       box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra para destaque */
       z-index: 1000; /* Garante que o menu fique acima de outros elementos */
+      border-radius: 20px; /* Borda arredondada */
+      margin-right: 10px;
     }
   
     .navigation.active {
@@ -237,8 +244,10 @@ footer {
       /* Posicione o botão à direita */
       position: absolute;
       right: 50px;
-      top: 50px;
+      top: 30px;
       display: flex; /* Mostra o ícone do menu hambúrguer */
+      width:1; /* Aumenta a largura do container */
+      height: 70%; /* Aumenta a altura do container */
     }
 
     .login-button-container {
@@ -249,6 +258,8 @@ footer {
       justify-content: center;
       /* meter o botão no lado direito */
       padding-left: 80px;
+      margin-bottom: 20px;
+
 
     }
 
@@ -298,16 +309,16 @@ footer {
     .navigation {
       display: none; /* Esconde o menu de navegação por padrão */
       flex-direction: column; /* Orientação vertical dos links */
-      align-items: flex-start; /* Alinha os links à esquerda */
-      padding: 20px; /* Espaço ao redor dos links */
+      align-items: center; /* Alinha os links à esquerda */
+      padding: 10px;; /* Espaço ao redor dos links */
       position: absolute; /* Posicionamento absoluto */
-      top: 120px; /* Posição a partir do topo do header */
+      top: 100px; /* Posição a partir do topo do header */
       right:0; /* Posição a partir da esquerda da página */
-      background-color: white; /* Cor de fundo do menu expandido */
-      width: 50%; /* Largura do menu expandido */
-      height: 50%; /* Altura do menu expandido */
+      background-color: var(--bege); /* Cor de fundo do menu expandido */
       box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra para destaque */
       z-index: 1000; /* Garante que o menu fique acima de outros elementos */
+      border-radius: 20px; /* Borda arredondada */
+      margin-right: 10px;
     }
   
     .navigation.active {
@@ -329,8 +340,11 @@ footer {
       /* Posicione o botão à direita */
       position: absolute;
       right: 50px;
-      top: 50px;
+      top: 30px;
       display: flex; /* Mostra o ícone do menu hambúrguer */
+      width:1; /* Aumenta a largura do container */
+      height: 70%; /* Aumenta a altura do container */
+      
     }
     
     .login-button-container {
@@ -341,6 +355,7 @@ footer {
       justify-content: center;
       /* meter o botão no lado direito */
       padding-left: 80px;
+      margin-bottom: 20px;
     }
   }
 
@@ -362,20 +377,23 @@ footer {
     .navigation {
       display: none; /* Esconde o menu de navegação por padrão */
       flex-direction: column; /* Orientação vertical dos links */
-      align-items: flex-start; /* Alinha os links à esquerda */
-      padding: 20px; /* Espaço ao redor dos links */
+      align-items: center; /* Alinha os links à esquerda */
+      padding: 10px; /* Espaço ao redor dos links */
       position: absolute; /* Posicionamento absoluto */
-      top: 120px; /* Posição a partir do topo do header */
+      top: 100px; /* Posição a partir do topo do header */
       right:0; /* Posição a partir da esquerda da página */
-      background-color: white; /* Cor de fundo do menu expandido */
-      width: 50%; /* Largura do menu expandido */
-      height: 50%; /* Altura do menu expandido */
+      background-color: var(--bege); /* Cor de fundo do menu expandido */
       box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra para destaque */
       z-index: 1000; /* Garante que o menu fique acima de outros elementos */
+      border-radius: 20px; /* Borda arredondada */
+      width: 250px; /* Diminui a largura do container */
+      margin-right: 10px; /* Espaçamento à direita para não ficar colado na borda */
+       /* Define a altura do elemento para ocupar toda a altura do viewport */
     }
   
     .navigation.active {
       display: flex; /* Mostra o menu quando ativo */
+      
     }
   
     .nav-link {
@@ -393,8 +411,10 @@ footer {
       /* Posicione o botão à direita */
       position: absolute;
       right: 50px;
-      top: 50px;
+      top: 30px;
       display: flex; /* Mostra o ícone do menu hambúrguer */
+      width: 25px; /* Diminui a largura do container */
+      height: 70%; /* Aumenta a altura do container */
     }
 
     .login-button-container {
@@ -405,14 +425,9 @@ footer {
       justify-content: center;
       /* meter o botão no lado direito */
       padding-left: 80px;
+      margin-bottom: 20px;
+
     } 
-
-
-  }
-
-  /* Responsive Desktop from 1139px */
-
-  @media (min-width: 1139px) and (max-width: 1368px) {
 
 
   }

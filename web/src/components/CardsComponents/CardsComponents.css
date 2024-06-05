@@ -1,7 +1,7 @@
 .card {
   width: 100%;
   background-color: #FFFFFF; /* Cor de preenchimento branca */
-  border-radius: 12.2px; /* Raio da borda */
+  border-radius: 12.2px  !important ;/* Raio da borda */
   display: flex;
   flex-direction: column;  
   justify-content: center; /* Centraliza o conteúdo horizontalmente */
@@ -12,8 +12,7 @@
 .card-photo {
   width: 100%;
   height: 300px;
-  object-fit: cover;
-  border-radius: 12.2px 12.2px 0 0; /* Bordas arredondadas no topo */
+  object-fit:fill; /* Bordas arredondadas no topo */
 }
 
 .card-content {

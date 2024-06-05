@@ -22,7 +22,15 @@ function Header() {
   }, [setAuth]);
 
   const toggleMenu = () => {
-    setIsMenuOpen(isMenuOpen => !isMenuOpen);
+    setIsMenuOpen(prevState => {
+      const newState = !prevState;
+      if (newState) {
+        document.querySelector('.header').classList.add('no-scroll');
+      } else {
+        document.querySelector('.header').classList.remove('no-scroll');
+      }
+      return newState;
+    });
   };
 
   const handleLogin = () => {
