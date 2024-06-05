@@ -31,3 +31,10 @@ CREATE TABLE IF NOT EXISTS RoteiroLoc (
     FOREIGN KEY (rotloc_rot_id) REFERENCES Roteiro(rot_id),
     FOREIGN KEY (rotloc_loc_id) REFERENCES Local(loc_id)
 );
+
+CREATE TABLE IF NOT EXISTS place_photos (
+    photo_id SERIAL PRIMARY KEY,
+    place_id INT,
+    photo_reference VARCHAR(255),
+    FOREIGN KEY (place_id) REFERENCES Local(loc_id)
+);

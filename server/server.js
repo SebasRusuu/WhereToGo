@@ -59,6 +59,23 @@ function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s' });
 }
 
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Raio da Terra em km
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distância em km
+  return distance;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
 async function fetchPlaces(selectedOptions, lat, lng) {
   const apiKey = process.env.GOOGLE_API_KEY;
   const radius = 20000; // 20 km radius
@@ -75,7 +92,20 @@ async function fetchPlaces(selectedOptions, lat, lng) {
   const allPlaces = placesArrays.flat();
   console.log('All places fetched:', allPlaces);
 
-  const sortedPlaces = allPlaces.sort((a, b) => b.rating - a.rating);
+  // Adicionar cálculo de distância a cada local
+  allPlaces.forEach(place => {
+    place.distance = getDistanceFromLatLonInKm(lat, lng, place.geometry.location.lat, place.geometry.location.lng);
+  });
+
+  // Ordenar por proximidade e depois por classificação
+  const sortedPlaces = allPlaces.sort((a, b) => {
+    const distanceDiff = a.distance - b.distance;
+    if (distanceDiff === 0) {
+      return b.rating - a.rating;
+    }
+    return distanceDiff;
+  });
+
   const topRatedPlaces = sortedPlaces.slice(0, 6);
   const remainingPlaces = sortedPlaces.slice(6);
 
@@ -85,7 +115,8 @@ async function fetchPlaces(selectedOptions, lat, lng) {
     price_level: place.price_level,
     rating: place.rating,
     geometry: place.geometry,
-    photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || []
+    photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || [],
+    distance: place.distance
   });
 
   const formattedTopRatedPlaces = topRatedPlaces.map(formatPlace);
@@ -99,6 +130,7 @@ async function fetchPlaces(selectedOptions, lat, lng) {
     remainingPlaces: formattedRemainingPlaces
   };
 }
+
 
 //top-visited-places end point
 app.get('/top-visited-places', async (req, res) => {
@@ -122,6 +154,40 @@ app.get('/top-visited-places', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// Endpoint to get saved roteiros
+app.get('/roteiros/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.userId;
+
+  try {
+    const result = await pool.query(`
+      SELECT r.rot_id, r.rot_name, array_agg(json_build_object(
+        'name', l.loc_name,
+        'geometry', json_build_object(
+          'location', json_build_object(
+            'lat', ST_Y(l.loc_coo::geometry),
+            'lng', ST_X(l.loc_coo::geometry)
+          )
+        ),
+        'formatted_address', l.loc_name,
+        'rating', rl.rotloc_rate,
+        'photos', array(SELECT json_build_object('photo_reference', p.photo_reference) FROM place_photos p WHERE p.place_id = l.loc_id)
+      )) AS places
+      FROM "roteiro" r
+      JOIN "roteiroloc" rl ON r.rot_id = rl.rotloc_rot_id
+      JOIN "local" l ON rl.rotloc_loc_id = l.loc_id
+      WHERE r.rot_id = $1 AND r.rot_user_id = $2
+      GROUP BY r.rot_id
+    `, [id, userId]);
+
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao buscar roteiro:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 // Endpoint to save roteiro
 app.post('/save-roteiro', authenticateToken, async (req, res) => {
@@ -392,6 +458,77 @@ app.post('/save-interests', authenticateToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.get('/places-to-visit', async (req, res) => {
+  try {
+    const apiKey = process.env.GOOGLE_API_KEY;
+    const { placeType, region } = req.query;
+    let query = 'tourist+attractions+in+Portugal';
+
+    if (placeType) {
+      query += `+${placeType}`;
+    }
+    if (region) {
+      query += `+${region}`;
+    }
+
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${apiKey}`;
+
+    const response = await axios.get(url);
+    const places = response.data.results;
+
+    const formattedPlaces = places.map(place => ({
+      name: place.name,
+      formatted_address: place.formatted_address,
+      rating: place.rating,
+      photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || [],
+      placeType: place.types.find(type => type.includes('point_of_interest') || type.includes('establishment')) || 'outro',
+      region: place.plus_code ? place.plus_code.compound_code.split(' ')[1] : 'Portugal' // Exemplo para pegar a região do plus code
+    }));
+
+    res.status(200).json({ places: formattedPlaces });
+  } catch (error) {
+    console.error('Error fetching places to visit:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+app.get('/places-to-eat', async (req, res) => {
+  try {
+    const apiKey = process.env.GOOGLE_API_KEY;
+    const { foodType, region } = req.query;
+    let query = 'restaurants+in+Portugal';
+    
+    if (foodType) {
+      query += `+${foodType}`;
+    }
+    if (region) {
+      query += `+${region}`;
+    }
+
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${apiKey}`;
+
+    const response = await axios.get(url);
+    const places = response.data.results;
+
+    const formattedPlaces = places.map(place => ({
+      name: place.name,
+      formatted_address: place.formatted_address,
+      rating: place.rating,
+      photos: place.photos?.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`) || [],
+      foodType: place.types.find(type => type.includes('restaurant') || type.includes('food')) || 'outro',
+      region: place.plus_code ? place.plus_code.compound_code.split(' ')[1] : 'Portugal' // Exemplo para pegar a região do plus code
+    }));
+
+    res.status(200).json({ places: formattedPlaces });
+  } catch (error) {
+    console.error('Error fetching places to eat:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 app.post('/get-places', async (req, res) => {
   const { selectedOptions, lat, lng } = req.body;

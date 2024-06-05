@@ -62,7 +62,7 @@ export default function RoteirosLoc() {
       });
 
       console.log('Roteiro saved:', response.data);
-      navigate('/roteprincipal');
+      navigate('/roteiro');
     } catch (error) {
       console.error('Error saving roteiro:', error);
     }
@@ -164,3 +164,5 @@ export default function RoteirosLoc() {
     </div>
   );
 }
+
+

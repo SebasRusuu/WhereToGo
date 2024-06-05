@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import './roteiro.css';
+import RoteiroView from '../RoteiroView'; // Importa RoteiroView do diretório correto
 
 function RotePrincipal() {
   const [roteiros, setRoteiros] = useState([]);
+  const [selectedRoteiro, setSelectedRoteiro] = useState(null);
 
   useEffect(() => {
     const fetchRoteiros = async () => {
@@ -20,6 +22,17 @@ function RotePrincipal() {
 
     fetchRoteiros();
   }, []);
+
+  const handleRoteiroClick = async (roteiroId) => {
+    try {
+      const response = await axios.get(`http://localhost:4000/roteiros/${roteiroId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      setSelectedRoteiro(response.data);
+    } catch (error) {
+      console.error('Error fetching roteiro details:', error);
+    }
+  };
 
   const textContainerVariants = {
     hidden: { x: '-50vw', opacity: 0 },
@@ -51,12 +64,16 @@ function RotePrincipal() {
 
       <div className="roteiros-container">
         {roteiros.map((roteiro, index) => (
-          <div key={index} className="item">
+          <div key={index} className="item" onClick={() => handleRoteiroClick(roteiro.rot_id)}>
             <h3>{roteiro.rot_name}</h3>
             <p>{roteiro.loc_names.join(', ')}</p>
           </div>
         ))}
       </div>
+
+      {selectedRoteiro && (
+        <RoteiroView formData={selectedRoteiro} onClose={() => setSelectedRoteiro(null)} />
+      )}
     </div>
   );
 }

@@ -1,52 +1,53 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './EatComponents.css';
 import CardsComponents from '../CardsComponents';
-
+import axios from 'axios';
 
 function EatComponents() {
-  const textContainerVariants = {
-    hidden: { x: '-50vw', opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.5, type: 'spring', stiffness: 120 }
-    },
+  const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [foodType, setFoodType] = useState('');
+  const [region, setRegion] = useState('');
+
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
+
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/places-to-eat');
+      setPlaces(response.data.places);
+      setFilteredPlaces(response.data.places);
+    } catch (error) {
+      console.error('Error fetching places:', error);
+    }
   };
 
-  // Variantes para a animação da imagem
-  // const imageVariants = {
-  //   hidden: { x: '50vw', opacity: 0 },
-  //   visible: {
-  //     x: 0,
-  //     opacity: 1,
-  //     transition: { duration: 0.5, type: 'spring', stiffness: 120 }
-  //   },
-  // };
-
-  // Variante para a animação do card
-  const cardVariants = {
-    hidden: { scale: 0 },
-    visible: {
-      scale: 1,
-      transition: { delay: 0.2, duration: 0.5, type: 'spring', stiffness: 120 }
-    },
+  const filterResults = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/places-to-eat', {
+        params: {
+          foodType,
+          region,
+        },
+      });
+      setFilteredPlaces(response.data.places);
+    } catch (error) {
+      console.error('Error filtering places:', error);
+    }
   };
 
   return (
     <>
-      <motion.div className="feature-card" variants={cardVariants} initial="hidden" animate="visible">
-        <motion.div className="text-container" variants={textContainerVariants} initial="hidden" animate="visible">
+      <motion.div className="feature-card" initial="hidden" animate="visible">
+        <motion.div className="text-container" initial="hidden" animate="visible">
           <p className="sloganeat-p">Para cada fome, um destino delicioso</p>
         </motion.div>
       </motion.div>
 
-      <motion.div className="about-us-container" initial="hidden" animate="visible">
-
-      </motion.div>
-
-      <div class="search-bar">
-        <select id="foodType" onchange="filterResults()">
+      <div className="search-bar">
+        <select id="foodType" value={foodType} onChange={(e) => setFoodType(e.target.value)}>
           <option value="">Tipo de Cozinha</option>
           <option value="portuguesa">Portuguesa</option>
           <option value="italiana">Italiana</option>
@@ -54,7 +55,7 @@ function EatComponents() {
           <option value="japonesa">Japonesa</option>
           <option value="marisqueira">Marisqueira</option>
         </select>
-        <select id="region" onchange="filterResults()">
+        <select id="region" value={region} onChange={(e) => setRegion(e.target.value)}>
           <option value="">Região</option>
           <option value="aveiro">Aveiro</option>
           <option value="beja">Beja</option>
@@ -77,20 +78,18 @@ function EatComponents() {
           <option value="madeira">Madeira</option>
           <option value="acores">Açores</option>
         </select>
-        <button onclick="filterResults()">Pesquisar</button>
+        <button onClick={filterResults}>Pesquisar</button>
       </div>
 
-
-      <CardsComponents>Português</CardsComponents>
-      <CardsComponents>Italiano</CardsComponents>
-      <CardsComponents>Mexicano</CardsComponents>
-      <CardsComponents>Japonês</CardsComponents>
-      <CardsComponents>Marisqueira</CardsComponents>
+      <div className="container">
+        <div className="row">
+          {filteredPlaces.map((place, index) => (
+            <CardsComponents key={index} place={place} />
+          ))}
+        </div>
+      </div>
     </>
   );
 }
 
-
-
-
-export default EatComponents
+export default EatComponents;

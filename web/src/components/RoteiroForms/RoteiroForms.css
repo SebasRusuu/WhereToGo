@@ -28,7 +28,7 @@
 .roteiro-form {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza os elementos no eixo horizontal */
+  align-items: center;
   color: var(--blue);
   font-weight: bold;
   font-family: Inter, sans-serif;
@@ -47,11 +47,13 @@
   border-radius: 20px;
   margin-bottom: 15px;
   font-weight: bold;
-  width: 100%; /* Faz o container ocupar toda a largura disponível */
+  width: 100%;
 }
 
-.roteiro-form select {
+.roteiro-form select,
+.location-search-input {
   width: 100%;
+  max-width: 100%;
   padding: 10px 20px;
   margin-bottom: 15px;
   border-radius: 30px;
@@ -61,6 +63,35 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  box-sizing: border-box;
+}
+
+.location-search-input::placeholder {
+  color: #888;
+}
+
+/* Style the autocomplete dropdown */
+.autocomplete-dropdown-container {
+  position: absolute;
+  font-size: large;
+  z-index: 1000;
+  width: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 5px;
+}
+
+.autocomplete-dropdown-container .suggestion-item {
+  padding: 15px 20px;
+  cursor: pointer;
+}
+
+.autocomplete-dropdown-container .suggestion-item--active {
+  background-color: #e0e0e0;
 }
 
 /* Estilização das checkboxes */
@@ -73,9 +104,8 @@
   align-items: center;
   cursor: pointer;
   position: relative;
-  padding-left: 35px; /* Espaço para o quadrado */
+  padding-left: 35px;
   margin-bottom: 15px;
-  
 }
 
 .roteiro-form input[type="checkbox"] + label:before {
@@ -107,13 +137,13 @@
 }
 
 .submit-button {
-  padding: 10px 50px; /* Ajuste do espaçamento interno */
+  padding: 10px 50px;
   color: white;
   border: none;
   background-color: var(--blue);
-  border-radius: 25px; /* Bordas arredondadas */
-  margin-top: 20px; /* Espaço acima do botão */
-  text-align: center; /* Centraliza o texto */
+  border-radius: 25px;
+  margin-top: 20px;
+  text-align: center;
   font-weight: bold;
 }
 
@@ -134,4 +164,9 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
 }

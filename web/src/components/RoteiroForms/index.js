@@ -1,4 +1,3 @@
-// frontend
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
@@ -8,6 +7,7 @@ function RoteiroForms({ onClose, userId }) {
   const [address, setAddress] = useState('');
   const [latLng, setLatLng] = useState({ lat: null, lng: null });
   const [eatDuringTrip, setEatDuringTrip] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [visitOptions, setVisitOptions] = useState({
     museus: false,
     monumentos: false,
@@ -43,8 +43,13 @@ function RoteiroForms({ onClose, userId }) {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
     const selectedOptions = Object.keys(visitOptions).filter(key => visitOptions[key]);
+    event.preventDefault();
+    if (address === '' || eatDuringTrip === '' || selectedOptions.length === 0) {
+      setErrorMessage('Por favor, preencha todos os campos obrigatórios e selecione pelo menos uma opção.');
+      return;
+    }
+
     const formData = {
       region: address,
       eatDuringTrip,
@@ -93,7 +98,7 @@ function RoteiroForms({ onClose, userId }) {
                         ? 'suggestion-item--active'
                         : 'suggestion-item';
                       const style = suggestion.active
-                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                        ? { backgroundColor: '#e0e0e0', cursor: 'pointer' }
                         : { backgroundColor: '#ffffff', cursor: 'pointer' };
                       return (
                         <div
@@ -202,7 +207,13 @@ function RoteiroForms({ onClose, userId }) {
             </div>
           </div>
           
-          <button type="submit" className="submit-button">Submit</button>
+          <button
+            type="submit"
+            className="submit-button"
+          >
+            Submit
+          </button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
       </div>
     </div>

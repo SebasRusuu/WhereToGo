@@ -1,11 +1,44 @@
-import React from 'react'
-import '../App.css'
+import React, { useState, useEffect } from 'react';
+import '../App.css';
 import CardsComponents from '../components/CardsComponents';
 import CustomCard from '../components/CustomCard';
 import { motion } from 'framer-motion';
-
+import axios from 'axios';
 
 function Places() {
+  const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [placeType, setPlaceType] = useState('');
+  const [region, setRegion] = useState('');
+
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
+
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/places-to-visit');
+      setPlaces(response.data.places);
+      setFilteredPlaces(response.data.places);
+    } catch (error) {
+      console.error('Error fetching places:', error);
+    }
+  };
+
+  const filterResults = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/places-to-visit', {
+        params: {
+          placeType,
+          region,
+        },
+      });
+      setFilteredPlaces(response.data.places);
+    } catch (error) {
+      console.error('Error filtering places:', error);
+    }
+  };
+
   const textContainerVariants = {
     hidden: { x: '-50vw', opacity: 0 },
     visible: {
@@ -15,17 +48,6 @@ function Places() {
     },
   };
 
-  // Variantes para a animação da imagem
-  // const imageVariants = {
-  //   hidden: { x: '50vw', opacity: 0 },
-  //   visible: {
-  //     x: 0,
-  //     opacity: 1,
-  //     transition: { duration: 0.5, type: 'spring', stiffness: 120 }
-  //   },
-  // };
-
-  // Variante para a animação do card
   const cardVariants = {
     hidden: { scale: 0 },
     visible: {
@@ -46,47 +68,55 @@ function Places() {
         {/* Sobre nós  */}
       </motion.div>
 
-      <div class="search-bar">
-        <select id="foodType" onchange="filterResults()">
+      <div className="search-bar">
+        <select id="placeType" value={placeType} onChange={(e) => setPlaceType(e.target.value)}>
           <option value="">Tipo de Local</option>
-          <option value="portuguesa">Museus</option>
-          <option value="italiana">Monumentos</option>
-          <option value="mexicana">Praias</option>
+          <option value="museus">Museus</option>
+          <option value="monumentos">Monumentos</option>
+          <option value="miradouro">Miradouros</option>
+          <option value="praias">Praias</option>
+          <option value="parques">Parques</option>
+          <option value="parqueDiversao">Parques de Diversão</option>
+          <option value="palacio">Palácios</option>
+          <option value="rooftop">Rooftops</option>
         </select>
-        <select id="region" onchange="filterResults()">
-        <option value="">Região</option>
-        <option value="aveiro">Aveiro</option>
-        <option value="beja">Beja</option>
-        <option value="braga">Braga</option>
-        <option value="braganca">Bragança</option>
-        <option value="castelo_branco">Castelo Branco</option>
-        <option value="coimbra">Coimbra</option>
-        <option value="evora">Évora</option>
-        <option value="faro">Faro</option>
-        <option value="guarda">Guarda</option>
-        <option value="leiria">Leiria</option>
-        <option value="lisboa">Lisboa</option>
-        <option value="portalegre">Portalegre</option>
-        <option value="porto">Porto</option>
-        <option value="santarem">Santarém</option>
-        <option value="setubal">Setúbal</option>
-        <option value="viana_do_castelo">Viana do Castelo</option>
-        <option value="vila_real">Vila Real</option>
-        <option value="viseu">Viseu</option>
-        <option value="madeira">Madeira</option>
-        <option value="acores">Açores</option>
+        <select id="region" value={region} onChange={(e) => setRegion(e.target.value)}>
+          <option value="">Região</option>
+          <option value="aveiro">Aveiro</option>
+          <option value="beja">Beja</option>
+          <option value="braga">Braga</option>
+          <option value="braganca">Bragança</option>
+          <option value="castelo_branco">Castelo Branco</option>
+          <option value="coimbra">Coimbra</option>
+          <option value="evora">Évora</option>
+          <option value="faro">Faro</option>
+          <option value="guarda">Guarda</option>
+          <option value="leiria">Leiria</option>
+          <option value="lisboa">Lisboa</option>
+          <option value="portalegre">Portalegre</option>
+          <option value="porto">Porto</option>
+          <option value="santarem">Santarém</option>
+          <option value="setubal">Setúbal</option>
+          <option value="viana_do_castelo">Viana do Castelo</option>
+          <option value="vila_real">Vila Real</option>
+          <option value="viseu">Viseu</option>
+          <option value="madeira">Madeira</option>
+          <option value="acores">Açores</option>
         </select>
-        <button onclick="filterResults()">Pesquisar</button>
+        <button onClick={filterResults}>Pesquisar</button>
       </div>
 
-      <CardsComponents>Museus</CardsComponents>
-      <CardsComponents>Monumentos</CardsComponents>
-      <CardsComponents>Praias</CardsComponents>
+      <div className="container">
+        <div className="row">
+          {filteredPlaces.map((place, index) => (
+            <CardsComponents key={index} place={place} />
+          ))}
+        </div>
+      </div>
 
       <CustomCard />
-      
     </>
   );
 }
 
-export default Places
+export default Places;

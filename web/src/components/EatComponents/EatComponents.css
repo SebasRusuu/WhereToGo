@@ -1,8 +1,16 @@
 .sloganeat-p{
-    color: var(--blue);
-      font-size: 40px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: bold;
-      padding-top: 15px;
-      
-  }
+  color: var(--blue);
+    font-size: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding-top: 15px;
+
+}
+
+.search-bar{
+width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 250px;
+}
