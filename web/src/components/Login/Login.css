@@ -132,6 +132,14 @@
   align-items: center;
 }
 
+.nopass{
+  display: block;
+  color: var(--blue);
+  text-decoration: underline;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
 .container-password{
   margin-bottom: 15px;
 }

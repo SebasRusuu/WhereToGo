@@ -12,7 +12,7 @@ import LoginModal from "./components/LoginModal";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import Admin from "./components/AdminDashboard";
+import Admin from "./components/AdminDashboard";
 import ResetPassword from "./components/ResetPassword";
 import RoteirosLoc from "./components/RoteiroLoc";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -45,7 +45,7 @@ function App() {
             <Route path="/login-modal" element={<LoginModal />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            {/* <Route path="/admin" element={<Admin />} /> */}
+            <Route path="/admin" element={<Admin />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/roteiros-loc" element={<RoteirosLoc />} />
           </Routes>

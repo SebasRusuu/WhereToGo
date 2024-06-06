@@ -59,7 +59,6 @@ function Register({ isOpen, onClose, onLoginOpen }) {
       });
   
       if (response.status === 201) {
-        alert('Registration successful!');
         onClose();
         onLoginOpen(); // Open the login modal after successful registration
       } else {

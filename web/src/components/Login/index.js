@@ -32,7 +32,6 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
         setAuth({ token, user });
         localStorage.setItem('token', token);
         localStorage.setItem('userId', user.id);
-        alert("Login successful!");
         onLogin();  // This should be a function passed down as a prop
         onClose();
         window.location.href = '/';
@@ -89,7 +88,7 @@ function Login({ isOpen, onClose, onRegisterOpen, onResetEmailOpen, onLogin }) {
 
           <div className="login-links">
             <div className="login-nopass">
-              <a onClick={handleResetEmail}>Esqueceu-se da Palavra-passe?</a>
+              <a className="nopass"onClick={handleResetEmail}>Esqueceu-se da Palavra-passe?</a>
             </div>
 
             <div className="login-register">

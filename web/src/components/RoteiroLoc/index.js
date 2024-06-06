@@ -91,7 +91,6 @@ export default function RoteirosLoc() {
               {topRatedPlaces.map((place, index) => (
                 <li key={index} onClick={() => handlePlaceClick(place)}>
                   <span>{place.name}</span>
-                  <button className="delete-button">🗑️</button>
                 </li>
               ))}
             </ul>
@@ -103,7 +102,6 @@ export default function RoteirosLoc() {
               {remainingPlaces.map((place, index) => (
                 <li key={index} onClick={() => handlePlaceClick(place)}>
                   <span>{place.name}</span>
-                  <button className="add-button">+</button>
                 </li>
               ))}
             </ul>
