@@ -17,7 +17,7 @@ function Places() {
 
   const fetchPlaces = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/places-to-visit');
+      const response = await axios.get('https://wheretogo-4kxz.onrender.com/places-to-visit');
       setPlaces(response.data.places);
       setFilteredPlaces(response.data.places);
     } catch (error) {
@@ -27,7 +27,7 @@ function Places() {
 
   const filterResults = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/places-to-visit', {
+      const response = await axios.get('https://wheretogo-4kxz.onrender.com/places-to-visit', {
         params: {
           placeType,
           region,

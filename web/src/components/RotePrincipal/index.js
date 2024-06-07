@@ -11,7 +11,7 @@ function RotePrincipal() {
   useEffect(() => {
     const fetchRoteiros = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/roteiros', {
+        const response = await axios.get('https://wheretogo-4kxz.onrender.com/roteiros', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setRoteiros(response.data);
@@ -25,7 +25,7 @@ function RotePrincipal() {
 
   const handleRoteiroClick = async (roteiroId) => {
     try {
-      const response = await axios.get(`http://localhost:4000/roteiros/${roteiroId}`, {
+      const response = await axios.get(`https://wheretogo-4kxz.onrender.com/roteiros/${roteiroId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setSelectedRoteiro(response.data);

@@ -366,7 +366,7 @@ app.post('/forgot-password', async (req, res) => {
       [resetToken, resetTokenExpires, email]
     );
 
-    const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+    const resetLink = `https://wheretogo-4kxz.onrender.com/reset-password?token=${resetToken}`;
 
     await sendResetEmail(email, resetLink);
 
@@ -669,8 +669,4 @@ app.get('/place-counts', async (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
 });

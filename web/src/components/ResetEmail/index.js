@@ -15,7 +15,7 @@ function ResetEmail({ isOpen, onClose }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/forgot-password', {
+      const response = await fetch('https://wheretogo-4kxz.onrender.com/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

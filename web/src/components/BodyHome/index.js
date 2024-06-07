@@ -22,7 +22,7 @@ function BodyHome() {
   useEffect(() => {
     const fetchTopVisitedPlaces = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/top-visited-places');
+        const response = await axios.get('https://wheretogo-4kxz.onrender.com/top-visited-places');
         setTopVisitedPlaces(response.data.places.slice(0, 9)); // Limita a 9 lugares
       } catch (error) {
         console.error('Error fetching top visited places:', error);

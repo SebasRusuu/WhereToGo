@@ -16,7 +16,7 @@ function EatComponents() {
 
   const fetchPlaces = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/places-to-eat');
+      const response = await axios.get('https://wheretogo-4kxz.onrender.com/places-to-eat');
       setPlaces(response.data.places);
       setFilteredPlaces(response.data.places);
     } catch (error) {
@@ -26,7 +26,7 @@ function EatComponents() {
 
   const filterResults = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/places-to-eat', {
+      const response = await axios.get('https://wheretogo-4kxz.onrender.com/places-to-eat', {
         params: {
           foodType,
           region,

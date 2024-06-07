@@ -5,7 +5,7 @@ import Plot from 'react-plotly.js';
 // Função para buscar estatísticas de lugares do servidor
 const fetchPlaceStats = async (city, type) => {
   try {
-    const response = await fetch(`http://localhost:4000/place-stats?city=${city}&type=${type}`);
+    const response = await fetch(`https://wheretogo-4kxz.onrender.com/place-stats?city=${city}&type=${type}`);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -17,7 +17,7 @@ const fetchPlaceStats = async (city, type) => {
 // Função para buscar a quantidade de locais por cidade
 const fetchPlaceCounts = async (type) => {
   try {
-    const response = await fetch(`http://localhost:4000/place-counts?type=${type}`);
+    const response = await fetch(`https://wheretogo-4kxz.onrender.com/place-counts?type=${type}`);
     const data = await response.json();
     return data;
   } catch (error) {

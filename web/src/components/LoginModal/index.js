@@ -33,7 +33,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
 
   const verifyToken = async (token) => {
     try {
-      const response = await fetch(`http://localhost:4000/verify-reset-token?token=${token}`);
+      const response = await fetch(`https://wheretogo-4kxz.onrender.com/verify-reset-token?token=${token}`);
       if (response.ok) {
         setToken(token);
         setIsResetPasswordOpen(true);
@@ -78,7 +78,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
     const decoded = jwtDecode(credentialResponse?.credential);
     const email = decoded.email;
     try {
-      const response = await fetch('http://localhost:4000/google-login', {
+      const response = await fetch('https://wheretogo-4kxz.onrender.com/google-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

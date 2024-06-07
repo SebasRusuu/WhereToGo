@@ -14,7 +14,7 @@ function ResetPassword({ isOpen, onClose, token }) {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/verify-reset-token?token=${token}`);
+        const response = await fetch(`https://wheretogo-4kxz.onrender.com/verify-reset-token?token=${token}`);
         if (response.ok) {
           setIsValidToken(true);
           navigate('/reset-password', { replace: true }); // Remover o token da URL
@@ -42,7 +42,7 @@ function ResetPassword({ isOpen, onClose, token }) {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/reset-password', {
+      const response = await fetch('https://wheretogo-4kxz.onrender.com/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

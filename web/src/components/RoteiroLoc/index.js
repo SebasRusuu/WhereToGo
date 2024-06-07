@@ -25,7 +25,7 @@ export default function RoteirosLoc() {
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const response = await axios.post('http://localhost:4000/get-places', {
+        const response = await axios.post('https://wheretogo-4kxz.onrender.com/get-places', {
           selectedOptions: formData.selectedOptions,
           lat: formData.lat,
           lng: formData.lng
@@ -52,7 +52,7 @@ export default function RoteirosLoc() {
 
   const handleSaveRoteiro = async () => {
     try {
-      const response = await axios.post('http://localhost:4000/save-roteiro', {
+      const response = await axios.post('https://wheretogo-4kxz.onrender.com/save-roteiro', {
         rotName: roteiroName,
         selectedOptions: topRatedPlaces,
         lat: formData.lat,
