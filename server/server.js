@@ -17,7 +17,9 @@ const port = 4000;
 
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ limit: '10kb', extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: 'https://wheretogoweb.onrender.com' // Permitir requisições do frontend
+}));
 
 const pool = new Pool({
   user: 'postgres',
@@ -557,7 +559,7 @@ app.get('/place-details', async (req, res) => {
 
   try {
     const response = await axios.get(url);
-    const data = await response.data;
+    const data = response.data;
     if (data.status === 'OK') {
       res.json(data.result);
     } else {
@@ -584,7 +586,7 @@ app.get('/place-stats', async (req, res) => {
 
   try {
     const response = await axios.get(url); // Faz a requisição para a API do Google Places
-    const data = await response.data; // Converte a resposta em JSON
+    const data = response.data; // Converte a resposta em JSON
     if (data.status !== 'OK') {
       console.error('Error from Google Places API:', data);
       return res.status(500).json({ error: data.status, message: data.error_message });
@@ -632,7 +634,7 @@ const fetchPlaceCounts = async (type) => {
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
     try {
       const response = await axios.get(url);
-      const data = await response.data;
+      const data = response.data;
       if (data.status === 'OK') {
         results[city] = data.results.length;
       } else {
