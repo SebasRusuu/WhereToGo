@@ -4,15 +4,14 @@ FROM node:18
 # Definir o diretório de trabalho no contêiner
 WORKDIR /server
 
-# Copiar package.json e package-lock.json
-COPY package*.json ./
+# Copiar package.json e package-lock.json do diretório 'server'
+COPY server/package*.json ./
 
 # Instalar dependências
 RUN npm install
 
-# Copiar o restante do código da aplicação
-COPY . .
-
+# Copiar o restante do código da aplicação do diretório 'server'
+COPY server/ ./
 
 # Expor a porta que o aplicativo irá rodar
 EXPOSE 4000
