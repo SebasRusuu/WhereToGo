@@ -131,8 +131,7 @@ async function fetchPlaces(selectedOptions, lat, lng) {
   };
 }
 
-
-//top-visited-places end point
+// Endpoint to fetch top visited places
 app.get('/top-visited-places', async (req, res) => {
   try {
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -154,6 +153,7 @@ app.get('/top-visited-places', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 // Endpoint to get saved roteiros
 app.get('/roteiros/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
@@ -186,8 +186,6 @@ app.get('/roteiros/:id', authenticateToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-
 
 // Endpoint to save roteiro
 app.post('/save-roteiro', authenticateToken, async (req, res) => {
@@ -493,8 +491,6 @@ app.get('/places-to-visit', async (req, res) => {
   }
 });
 
-
-
 app.get('/places-to-eat', async (req, res) => {
   try {
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -529,7 +525,6 @@ app.get('/places-to-eat', async (req, res) => {
   }
 });
 
-
 app.post('/get-places', async (req, res) => {
   const { selectedOptions, lat, lng } = req.body;
 
@@ -550,7 +545,6 @@ app.post('/get-places', async (req, res) => {
   }
 });
 
-
 app.get('/place-details', async (req, res) => {
   const { place_id } = req.query;
   const apiKey = process.env.GOOGLE_API_KEY;
@@ -562,8 +556,8 @@ app.get('/place-details', async (req, res) => {
   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,rating,price_level,user_ratings_total,geometry.location&key=${apiKey}`;
 
   try {
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await axios.get(url);
+    const data = await response.data;
     if (data.status === 'OK') {
       res.json(data.result);
     } else {
@@ -589,8 +583,8 @@ app.get('/place-stats', async (req, res) => {
   const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
 
   try {
-    const response = await fetch(url); // Faz a requisição para a API do Google Places
-    const data = await response.json(); // Converte a resposta em JSON
+    const response = await axios.get(url); // Faz a requisição para a API do Google Places
+    const data = await response.data; // Converte a resposta em JSON
     if (data.status !== 'OK') {
       console.error('Error from Google Places API:', data);
       return res.status(500).json({ error: data.status, message: data.error_message });
@@ -637,8 +631,8 @@ const fetchPlaceCounts = async (type) => {
   for (const city of cities) {
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${type}+in+${city}&key=${apiKey}`;
     try {
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await axios.get(url);
+      const data = await response.data;
       if (data.status === 'OK') {
         results[city] = data.results.length;
       } else {
